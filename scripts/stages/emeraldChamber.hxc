@@ -1,0 +1,52 @@
+import flixel.tweens.FlxTween;
+import funkin.modding.events.ScriptEvent;
+import funkin.modding.events.SongTimeScriptEvent;
+import funkin.play.PlayState;
+import funkin.play.stage.Stage;
+import funkin.play.character.CharacterType;
+import funkin.play.character.BaseCharacter;
+import funkin.play.character.CharacterDataParser;
+import flixel.FlxG;
+import funkin.graphics.FunkinSprite;
+import funkin.audio.FunkinSound;
+
+class EmeraldChamberStage extends Stage 
+{
+	public var opponentFloatOffset:Float = 0;
+
+	public function new()
+	{
+		super('emeraldChamber');
+	}
+
+    override function onCreate(event:ScriptEvent):Void {
+		super.onCreate(event);
+
+		FunkinSprite.cacheTexture(Paths.image('characters/fleetway1'));
+		FunkinSprite.cacheTexture(Paths.image('characters/fleetway2'));
+		FunkinSprite.cacheTexture(Paths.image('characters/fleetway3'));
+
+        game = PlayState.instance;
+    }
+
+	override function update(elapsed:Float):Void {
+		super.update(elapsed);
+
+		if (PlayState.instance != null) {
+			opponentFloatOffset += elapsed * 1.5;
+			game.currentStage.getDad().y += Math.sin(opponentFloatOffset) * 0.4;
+		}
+	}
+
+	function onStepHit(event:SongTimeScriptEvent):Void {
+		super.onStepHit(event);
+
+		if (!PlayState.instance.currentSong.id.toLowerCase() == 'chaos') return;
+
+		if (event.step == 1008) {
+			FlxG.camera.flash(0xFFFFDD00, 1);
+			FlxG.camera.shake(0.02, 0.2);
+			FunkinSound.playOnce(Paths.sound("PowerUp"), 1);
+		}
+	}
+}

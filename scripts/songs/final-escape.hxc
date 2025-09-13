@@ -1,0 +1,33 @@
+import flixel.util.FlxTimer;
+import funkin.play.Countdown;
+import funkin.play.song.Song;
+import funkin.modding.module.ModuleHandler;
+
+class FinalEscapeSong extends Song {
+    public function new() {
+        super("final-escape");
+    }
+
+    override function onCreate(event:ScriptEvent):Void {
+
+        super.onCreate(event);
+
+        doBloodSplash = ModuleHandler.getModule("EXEOptions").scriptGet("bloodsplashes");
+        if (!doBloodSplash) {
+            ModuleHandler.getModule('SwappingNotestyles').scriptCall('swapStrumlines', ['exeSemi']);
+        }
+
+    }
+
+	public override function onCountdownStart(event:CountdownScriptEvent):Void
+	{
+		super.onCountdownStart(event);
+
+        new FlxTimer().start(0.000001, function(tmr)
+        {
+            Countdown.skipCountdown();
+        });
+	}
+
+}
+

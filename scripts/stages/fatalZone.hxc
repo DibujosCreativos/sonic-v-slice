@@ -1,0 +1,311 @@
+import flixel.FlxG;
+import flixel.math.FlxBasePoint;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxTimer;
+import flixel.FlxCamera;
+import funkin.graphics.FunkinSprite;
+import funkin.Paths;
+import funkin.play.PlayState;
+import funkin.play.stage.Stage;
+import funkin.play.song.Song;
+import flixel.FlxSprite;
+import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
+import funkin.modding.module.ModuleHandler;
+
+class FatalZone extends Stage
+{
+	var statix:FunkinSprite;
+	var leftBorder:FlxSprite;
+	var rightBorder:FlxSprite;
+	var fatalCursor:FlxSprite;
+
+	var popups:Array<FlxSprite>;
+	public var popupTimer:FlxTimer;
+	public var popup = FunkinSprite.create(FlxG.random.float(0, FlxG.width - 300), FlxG.random.float(0, FlxG.height - 300)); // Insert popup as a class-level variable
+
+	public function new()
+	{
+		super("fatalZone");
+	}
+
+	override function onCreate(event:ScriptEvent):Void
+	{
+		super.onCreate(event);
+
+		game = PlayState.instance;
+        
+		screenRatioEdit = ModuleHandler.getModule("EXEOptions").scriptGet("screenratio");
+		modChartsEnabled = ModuleHandler.getModule("EXEOptions").scriptGet("modcharts");
+		doFatalPopups = ModuleHandler.getModule("EXEOptions").scriptGet("fatalpopups");
+
+		FunkinSprite.cacheTexture(Paths.image('fatal/domain'));
+		FunkinSprite.cacheTexture(Paths.image('fatal/domain2'));
+		FunkinSprite.cacheTexture(Paths.image('fatal/truefatalstage'));
+		FunkinSprite.cacheTexture(Paths.image('error_popups'));
+
+		statix = FunkinSprite.create(0, 0);
+		statix.frames = Paths.getSparrowAtlas('statix');
+		statix.animation.addByPrefix('static', 'statixx', 44, false);
+		statix.animation.play('static');
+		statix.scale.set(5.5, 5.5);
+		statix.cameras = [game.camHUD];
+		game.add(statix);
+		statix.visible = false;
+		statix.animation.finishCallback = function() {
+			statix.visible = false;
+		};
+
+		if (screenRatioEdit) {
+			leftBorder = new FlxSprite(0, 0).makeGraphic(50, FlxG.height, 0xFF000000);
+			leftBorder.scrollFactor.set(0, 0);
+			leftBorder.scale.set(5, 3);
+			leftBorder.cameras = [game.camHUD];
+			game.add(leftBorder);
+
+			rightBorder = new FlxSprite(FlxG.width - 50, 0).makeGraphic(50, FlxG.height, 0xFF000000);
+			rightBorder.scrollFactor.set(0, 0);
+			rightBorder.scale.set(5, 3);
+			rightBorder.cameras = [game.camHUD];
+			game.add(rightBorder);
+		}
+
+		if (doFatalPopups) {
+			fatalCursor = new FlxSprite();
+			fatalCursor.loadGraphic(Paths.image('fatal_mouse_cursor'));
+			fatalCursor.scrollFactor.set(0, 0);
+			fatalCursor.cameras = [game.camHUD];
+			fatalCursor.setGraphicSize(Std.int(fatalCursor.width * 1.5), Std.int(fatalCursor.height * 1.5));
+			fatalCursor.updateHitbox();
+			fatalCursor.antialiasing = false;
+			game.add(fatalCursor);
+
+			fatalCursor.zIndex = 9999;
+			fatalCursor.cameras = [game.camCutscene];
+			PlayState.instance.currentStage.refresh();
+
+			FlxG.mouse.visible = false;
+
+			popups = [];
+			popupTimer = new FlxTimer();
+		}
+	}
+
+	function createPopup():Void
+	{
+		if (doFatalPopups && !PlayState.instance.isGamePaused) {
+			var popup = FunkinSprite.create(
+				FlxG.random.float(0, FlxG.width - 400), // Random X position, adjusted for popup width
+				FlxG.random.float(0, FlxG.height - 300) // Random Y position, adjusted for popup height
+			);
+			popup.frames = Paths.getSparrowAtlas('error_popups');
+			if (popup.frames != null) {
+				popup.animation.addByPrefix('popup_anim', 'idle', 24, false);
+				popup.animation.addByPrefix('bye', 'bye', 24, false);
+				popup.animation.play('popup_anim');
+			}
+			popup.scrollFactor.set(0, 0);
+			popup.cameras = [game.camHUD];
+			popup.scale.set(1.6, 1.6);
+			popup.zIndex = 8000;
+			popup.updateHitbox();
+			popup.antialiasing = false;
+			game.add(popup);
+			popups.push(popup);
+
+			PlayState.instance.currentStage.refresh();
+		}
+	}
+
+	function clearPopups():Void
+	{
+		if (doFatalPopups) {
+			for (popup in popups)
+			{
+				game.remove(popup);
+				popup.destroy();
+			}
+			popups = [];
+		}
+	}
+
+	function clearPopupsQuickly():Void
+	{
+		if (doFatalPopups) {
+			var delay:Float = 0;
+			for (popup in popups)
+			{
+				if (popup != null)
+				{
+					var timer = new FlxTimer();
+					timer.start(delay, function(timer:FlxTimer):Void {
+						removePopup(popup);
+					});
+					delay += 0.07; // Reduced delay for faster removal
+				}
+			}
+		}
+	}
+
+	function removePopup(popup:FlxSprite):Void
+	{
+		if (doFatalPopups && popup != null && popup.animation != null) {
+			popup.animation.play('bye');
+			popup.animation.finishCallback = function() {
+				if (popup != null) {
+					game.remove(popup); // Remove the popup from the game
+					popups.remove(popup); // Remove the popup from the array
+					popup.destroy(); // Destroy the popup to free memory
+				}
+			};
+		}
+	}
+
+	override function update(elapsed:Float):Void
+	{
+		super.update(elapsed);
+
+		if (doFatalPopups) {
+			var mousePos = FlxG.mouse.getWorldPosition(game.camHUD); 
+			fatalCursor.x = mousePos.x - (fatalCursor.width / 2);
+			fatalCursor.y = mousePos.y - (fatalCursor.height / 2);
+
+			fatalCursor.scale.set(1 + 0.05 * Math.sin(FlxG.game.ticks / 10), 1 + 0.05 * Math.sin(FlxG.game.ticks / 10));
+
+			if (FlxG.mouse.justPressed)
+			{
+				var mousePos = FlxG.mouse.getWorldPosition(game.camHUD);
+				for (popup in popups)
+				{
+					if (popup.overlapsPoint(mousePos, true))
+					{
+						removePopup(popup);
+						break;
+					}
+				}
+			}
+
+			// Remove popups that have finished their "bye" animation
+			for (popup in popups)
+			{
+				if (popup.animation.curAnim != null && popup.animation.curAnim.name == 'bye' && popup.animation.curAnim.finished)
+				{
+					game.remove(popup);
+					popups.remove(popup);
+					popup.destroy();
+				}
+			}
+		}
+	}
+
+	function onCountdownStart()
+	{
+		if (PlayState.instance.opponentStrumline != null && PlayState.instance.playerStrumline != null) {
+			originalPlayerStrumlineX = PlayState.instance.playerStrumline.x;
+			originalOpponentStrumlineX = PlayState.instance.opponentStrumline.x;
+			originalOpponentStrumlineVisible = PlayState.instance.opponentStrumline.visible;
+			
+			if (screenRatioEdit && !FlxG.onMobile) {
+				PlayState.instance.opponentStrumline.x = 150;
+				PlayState.instance.playerStrumline.x = 692;
+			}
+		}
+	}
+
+	override function buildStage()
+	{
+		super.buildStage();
+	}
+
+	function onStepHit(event:SongTimeScriptEvent):Void
+	{
+		var phase2 = getNamedProp('fatalityBg2');
+		var phase2bg = getNamedProp('fatalityBg3');
+		var phase3bg = getNamedProp('fatalityBg4');
+
+		if (event.step == 257)
+		{
+			statix.visible = true;
+			statix.animation.play('static');
+
+			if (statix != null) {
+				var timer = new FlxTimer();
+				timer.start(0.12, function(timer:FlxTimer):Void {
+					statix.visible = false;
+				});
+			}
+			
+			phase2bg.zIndex = 11;
+			phase2.zIndex = 12;
+			PlayState.instance.currentStage.refresh();
+
+			if (doFatalPopups) {
+				popupTimer.start(2, function(timer:FlxTimer):Void {
+					createPopup();
+				}, 0);
+			}
+		}
+
+		if (event.step == 513)
+		{
+			if (doFatalPopups) {
+				popupTimer.start(event.beat % 2 == 0, function(timer:FlxTimer):Void {
+					createPopup();
+				}, 0);
+			}
+		}
+
+		if (event.step == 897)
+		{
+			if (doFatalPopups) {
+				clearPopups();
+				popupTimer.start(2, function(timer:FlxTimer):Void {
+					createPopup();
+				}, 0);
+			}
+		}
+
+		if (event.step == 1727)
+		{
+			if (doFatalPopups) {
+				clearPopupsQuickly();
+			}
+		}
+
+		if (event.step == 1984)
+		{
+			if (doFatalPopups) {
+				clearPopups();
+				popupTimer.start(event.beat % 1 == 0, function(timer:FlxTimer):Void { // Intense
+					createPopup();
+				}, 0);
+			}
+			
+			statix.visible = true;
+			statix.animation.play('static');
+
+			if (statix != null) {
+				var timer2 = new FlxTimer();
+				timer2.start(0.12, function(timer:FlxTimer):Void {
+					statix.visible = false;
+				});
+			}
+
+			if (modChartsEnabled && !FlxG.onMobile) {
+			    PlayState.instance.playerStrumline.x = FlxG.width / 2 - PlayState.instance.playerStrumline.width / 2;
+			    PlayState.instance.opponentStrumline.visible = false;
+			}
+			
+			phase3bg.zIndex = 20;
+			PlayState.instance.currentStage.refresh(); // Apply Z-Index.
+
+		}
+		if (event.step == 2527)
+		{
+			if (doFatalPopups) {
+				clearPopupsQuickly();
+			}
+		}
+	}
+}

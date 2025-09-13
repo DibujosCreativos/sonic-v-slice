@@ -1,0 +1,22 @@
+import funkin.play.PlayState;
+import funkin.play.song.Song;
+import funkin.modding.module.ModuleHandler;
+
+class BlackSunSong extends Song {
+    public function new() {
+        super("black-sun");
+    }
+
+    override function onCreate(event:ScriptEvent):Void {
+
+        super.onCreate(event);
+
+        PlayState.instance.opponentStrumline.visible = false;
+
+        doBloodSplash = ModuleHandler.getModule("EXEOptions").scriptGet("bloodsplashes");
+        if (!doBloodSplash) {
+            ModuleHandler.getModule('SwappingNotestyles').scriptCall('swapStrumlines', ['exeSemi']);
+        }
+    }
+}
+

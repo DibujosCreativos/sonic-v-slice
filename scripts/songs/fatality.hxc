@@ -1,0 +1,20 @@
+import funkin.play.song.Song;
+import funkin.modding.module.ModuleHandler;
+
+class FatalitySong extends Song {
+    public function new() {
+        super("fatality");
+    }
+
+    override function onCreate(event:ScriptEvent):Void {
+        super.onCreate(event);
+
+        ModuleHandler.getModule('SwappingNotestyles').scriptCall('swapOpponentStrumlines', ['exeFatalOpp']);
+    }
+    
+    override function onSongRetry(event:ScriptEvent):Void {
+        super.onSongRetry(event);
+
+        ModuleHandler.getModule('SwappingNotestyles').scriptCall('swapOpponentStrumlines', ['exeFatalOpp']);
+    }
+}

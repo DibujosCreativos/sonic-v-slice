@@ -1,0 +1,161 @@
+1.1.0
+Song Additions:
+- Added Round-A-Bout
+- Added Prey
+- Added Final Escape
+  * Note: Final Escape uses the KIRB0 MIX/MiiniStar version of the song
+  * This will be changed in a new version relatively soon, as I am unsatisfied with this as well.
+
+Additions:
+- Added the RETRO SONIC HUD
+  * Can be toggled in Settings
+- Added the "Full Note Spin" and "Strumline Spin" events
+  * Mainly used in Endless, but can be added to any song you want!
+- Added a strumline modchart to Too Slow, which was seen in V1 and V2
+  * Can be toggled in Settings, and will also toggle off the Full Note Spin and Strumline Spin events
+
+Improvements:
+- Cycles now has separate instrumental and vocal tracks
+- Weeks/Levels in the story menu are now separated and belong to the opponent you're facing
+- Reduced area of cinematic effects in Too Slow
+- Reworked Lyrics Event
+  * You can now change the color, size, border size, font, etc. All through the events tab.
+  * Mainly used in Prey, but can be applied to any song you want!
+
+Bug Fixes:
+- Fixed error when hitting a Phantom Note in Triple Trouble
+- Fixed error when dying to a Phantom Note in You Can't Run/Triple Trouble
+- Fixed object order for the stage in Endless
+- Fixed Faker not being playable on EASY and NORMAL
+- Fixed Black Sun having a high scroll speed on EASY and NORMAL
+- Fixed 'Fatal Error' popups appearing even while the game is paused
+- Fixed the Green Hill BG appearing prematurely in You Can't Run
+- Fixed Girlfriend (GENESIS) conflicting with base game Girlfriend (Pixel)
+- Fixed Girlfriend (Faker) and Girlfriend (GENESIS) only playing their left animations
+- Fixed Boyfriend (GENESIS) using base game Boyfriend (Pixel)'s health icon
+
+--
+1.1.5
+Song Addition:
+- Added Slaybells
+
+Additions:
+- Built-In Ghost-Tapping
+  * I thought on this for a while, and while I will try to avoid adding clutter to the mod, this was the only way I could make it work with other options
+- Restored Black Sun's health drain mechanic from VS Sonic.Exe 2.0
+- Added the "Girlfriend Sing" event
+  * Mainly used in Slaybells, but can be used in any song you want!
+
+Improvements:
+- Changed Sonic.exe's jumpscare (animated) in Too Slow to a modernized one
+- Sonic.exe's jumpscare in Too Slow is now cached and no longer lags upon first appearance
+- Changed Sonic.exe's I AM GOD animation in Too Slow
+- Updated Too Slow's modchart
+- Static Notes are now cached and no longer lag upon first miss
+- Screen Static now plays more frequently in Too Slow
+- You can now increase or decrease the line spacing of lyrics in the Lyrics Event
+
+Bug Fixes:
+- Fixed Boyfriend (GENESIS) not having a health icon
+- Fixed Sarah's idle animation playing repeatedly and not on beat
+- Fixed Sarah's singing animations being static
+- Fixed Final Escape using the default HUD during the Green Hill section
+- Fixed EXE Hud overlapping blackout scenes in Final Escape
+- Fixed Furnace still partially being visible flying under the road in Prey
+- Fixed object order in Too Slow
+
+--
+1.2.0
+Song Additions:
+- Added Chaos
+- Added Fight or Flight
+- Added Too Slow Encore
+- Added Personnel (Serious)
+- Added Relax
+- Added Spike Trap
+
+Features/Additions:
+- 0.7.0 + Mobile Compatibility
+
+- Added "Blood Note Splashes" option
+        * Toggles Blood Splashes (of course)
+- Added "Encore Skins" option
+        * Toggles whether BF and GF should use their Encore skins
+        * Always: Applies to every song (BF) in the game
+        * Encore Only: Only applies to Encore songs (Default option)
+        * Never: Doesn't apply the skins at all
+- Added "Encore Shaders" option
+        * Encore songs do indeed have the same color shader effect most Erect songs have
+        * This option toggles them on or off
+- Added "Freeplay BG" option
+        * Allows switching between different backing cards for different characters
+
+Improvements:
+- Disabling Screen Static no longer removes it from scripted song transitions (Ex: You Can't Run, Faker)
+- Screen Static (when enabled) will now appear every 35 song beats as opposed to 50
+- Force Middlescroll is now merged under the Mod Charts option
+
+Bug Fixes:
+- Fixed NEEDLEM0USE's animations being locked to idle
+- Fixed Phantom Notes not draining health at all in Triple Trouble
+- Fixed the opponent hitting Phantom Notes
+- Fixed Too Slow's modchart not properly stopping when the song is restarted
+- Fixed error in You Can't Run when Screen Static is turned off
+- Fixed Sonic's offsets during dialogue in Prey
+- Restarting/Game Overs now completely revert the song to it's original state
+
+Blurb:
+Mobile Version Details:
+- Fatal Error Popups are disabled by default
+- The "Static Flash" that appears when a Static Note is missed
+  will be slightly transparent
+- The window for dodging Fleetway Super Sonic's Chaos Blast
+  is slightly higher
+
+1.2.5
+Song Additions:
+- Endless (OG)
+- Execution
+
+Features/Additions:
+- 0.7.4 Compatibility
+
+- Added "Quick Time Events" option
+  * If you're having problems dodging in Chaos (especially on mobile), you can turn the laser blast off now.
+- Added "Song Intro Cards" option
+  * If you have problems with this feature on mobile, you can turn it off.
+- Added warning screen when loading the mod on mobile, due to (CURRENT) slight-instability
+  * An option is included to disable this
+
+Improvements/Optimizations:
+- Certain stages and song elements now are expanded to match the mobile resolution
+- Character switches are now preloaded and no longer lag the game (Like it was pre-0.7.0)
+- Sonic.exe's dialogue animation in Too Slow is now pre-loaded
+- When VCR shaders are disabled, none of the code responsible runs, improving stability
+- Optimized how song intro cards are handled
+- Rewrote Chaos' code, improving loading times
+- Removed "Encore Shaders" option
+  * This inclusion sacrificed performance for an unnecessary difference in visuals
+
+Bug Fixes:
+- Triple Trouble's character-swapping now works past the Knuckles section
+- Fixed Boyfriend (GENESIS) blinking in-and-out in Final Escape
+- Fixed note hitboxes on mobile when a texture swap is performed
+- Fixed layering issues when swapping a character
+- Chaos' quick-time event can now be hit on mobile
+
+0.3.0:
+ * Last main release until the full version.
+
+Song Additions:
+- You Can't Run Encore
+- Sunshine
+- Soulless
+- (??) Manual Blast
+
+Improvements/Optimizations:
+- (TBD) ASTC Version of the mod
+
+Bug Fixes:
+- Fixed an issue where missing a Phantom Note would add to the miss counter
+- 

@@ -1,0 +1,334 @@
+{
+	"version": "1.0.0",
+	"renderType": "multisparrow",
+	"offsets": [
+		0,
+		0
+	],
+	"danceEvery": 1,
+	"scale": 1,
+	"name": "Fleetway Super Sonic",
+	"flipX": false,
+	"cameraOffsets": [
+		0,
+		0
+	],
+	"isPixel": false,
+	"singTime": 4,
+	"startingAnimation": "idle",
+	"healthIcon": {
+		"offsets": [
+			0,
+			0
+		],
+		"isPixel": false,
+		"scale": 1,
+		"id": "fleetway",
+		"flipX": false
+	},
+	"assetPath": "characters/Fleetway_Super_Sonic",
+	"animations": [
+		{
+			"flipY": false,
+			"offsets": [
+				-46,
+				-50
+			],
+			"frameRate": 24,
+			"prefix": "Fleetway Idle",
+			"flipX": false,
+			"looped": false,
+			"name": "idle"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-80,
+				-67
+			],
+			"frameRate": 24,
+			"prefix": "Fleetway Up",
+			"flipX": false,
+			"looped": false,
+			"name": "singUP"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				8,
+				-195
+			],
+			"frameRate": 24,
+			"prefix": "Fleetway Right",
+			"flipX": false,
+			"looped": false,
+			"name": "singRIGHT"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-83,
+				-201
+			],
+			"frameRate": 24,
+			"prefix": "Fleetway Down",
+			"flipX": false,
+			"looped": false,
+			"name": "singDOWN"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				3,
+				-170
+			],
+			"frameRate": 24,
+			"prefix": "Fleetway Left",
+			"flipX": false,
+			"looped": false,
+			"name": "singLEFT"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				32,
+				-59
+			],
+			"frameRate": 24,
+			"prefix": "Fleetway HowFast",
+			"flipX": false,
+			"looped": false,
+			"name": "fastanim"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-83,
+				-201
+			],
+			"frameRate": 24,
+			"prefix": "Fleetway Down",
+			"flipX": false,
+			"looped": false,
+			"name": "singDOWN-loop"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				3,
+				-170
+			],
+			"frameRate": 24,
+			"prefix": "Fleetway Left",
+			"flipX": false,
+			"looped": false,
+			"name": "singLEFT-loop"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-80,
+				-67
+			],
+			"frameRate": 24,
+			"prefix": "Fleetway Up",
+			"flipX": false,
+			"looped": false,
+			"name": "singUP-loop"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				8,
+				-195
+			],
+			"frameRate": 24,
+			"prefix": "Fleetway Right",
+			"flipX": false,
+			"looped": false,
+			"name": "singRIGHT-loop"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway2",
+			"prefix": "Fleetway Growl",
+			"flipX": false,
+			"looped": false,
+			"name": "Growl"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				90,
+				-60
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway2",
+			"prefix": "Fleetway Right Alt",
+			"flipX": false,
+			"looped": false,
+			"name": "singRIGHT-alt"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				0,
+				-40
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway2",
+			"prefix": "Fleetway Scream",
+			"flipX": false,
+			"looped": false,
+			"name": "AAAA"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				160,
+				90
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway2",
+			"prefix": "Fleetway Show You",
+			"flipX": false,
+			"looped": false,
+			"name": "Ill show you"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				60,
+				26
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway2",
+			"prefix": "Fleetway Shut Up",
+			"flipX": false,
+			"looped": false,
+			"name": "Shut up"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				0,
+				-40
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway1",
+			"prefix": "Fleetway Scream",
+			"flipX": false,
+			"looped": false,
+			"name": "AAAA"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				60,
+				26
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway1",
+			"prefix": "Fleetway Shut Up",
+			"flipX": false,
+			"looped": false,
+			"name": "Shut up"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				60,
+				120
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway1",
+			"prefix": "Fleetway Grrr",
+			"flipX": false,
+			"looped": false,
+			"name": "Grrr"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				250,
+				10
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway1",
+			"prefix": "Fleetway Laser Blast",
+			"flipX": false,
+			"looped": false,
+			"name": "Laser Blast"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				-3,
+				-49
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway1",
+			"prefix": "Fleetway Laugh",
+			"flipX": false,
+			"looped": false,
+			"name": "lmao"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				90,
+				90
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway1",
+			"prefix": "Fleetway StepItUp",
+			"flipX": false,
+			"looped": false,
+			"name": "Step it up"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				13,
+				78
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway1",
+			"prefix": "Fleetway Too Slow",
+			"flipX": false,
+			"looped": false,
+			"name": "fatphobia"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				110,
+				90
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway1",
+			"prefix": "Fleetway WHAT?!",
+			"flipX": false,
+			"looped": false,
+			"name": "WHAT"
+		},
+		{
+			"flipY": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"assetPath": "characters/fleetway1",
+			"prefix": "Fleetway YoureFinished",
+			"flipX": false,
+			"looped": false,
+			"name": "Finished"
+		}
+	]
+}

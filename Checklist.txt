@@ -1,0 +1,4 @@
+Sarah's idle animation doesn't play to the beat - Fixed
+Round-A-Bout BF's offsets are broken?? - Unknown
+Sarah's singing animations are only one frame - Fixed
+Missing a Static Note for the first time in a song will cause lag - Fixed

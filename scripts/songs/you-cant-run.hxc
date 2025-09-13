@@ -1,0 +1,80 @@
+import flixel.FlxG;
+import funkin.Paths;
+import funkin.play.song.Song;
+import funkin.play.PlayStatePlaylist;
+import funkin.play.cutscene.VideoCutscene;
+import funkin.modding.module.ModuleHandler;
+// Check the other script in scripts/stages/xenoStage for the stage prop editing, everything else is done here.
+
+class YouCantRunSong extends Song {
+
+
+    var STOP:Bool = false;
+
+    var hasPlayedCutscene:Bool;
+
+    public function new() {
+        super("you-cant-run");
+
+        hasPlayedCutscene = false;
+    }
+
+    override function onCreate(event:ScriptEvent):Void {
+
+        super.onCreate(event);
+
+        hasPlayedCutscene = false;
+
+        doBloodSplash = ModuleHandler.getModule("EXEOptions").scriptGet("bloodsplashes");
+        if (!doBloodSplash) {
+            ModuleHandler.getModule('SwappingNotestyles').scriptCall('swapStrumlines', ['exeSemi']);
+        }
+
+    }
+
+    function onSongRetry():Void {
+        super.onSongRetry();
+
+        hasPlayedCutscene = true;
+    }
+
+	function onNoteHit(event:HitNoteScriptEvent)
+    {
+        if (!event.note.noteData.getMustHitNote())
+        {
+            if (!STOP)
+            {
+            if (event.note.holdNoteSprite != null)
+            {
+                // if there's a sustain, it'll keep on shaking the camera.
+                FlxG.camera.shake(0.01, event.note.holdNoteSprite.sustainLength/1000);
+            }
+            else
+                FlxG.camera.shake(0.01, 0.2); // screen will shake for 0.2 seconds if opponent hits a regular note.
+            }
+        }
+    
+        super.onNoteHit(event);
+    }
+
+    public override function onCountdownStart(event:CountdownScriptEvent):Void {
+        super.onCountdownStart(event);
+
+        if (!PlayStatePlaylist.isStoryMode) hasPlayedCutscene = true;
+
+        if (!hasPlayedCutscene) {
+           trace('Pausing countdown to play a video cutscene (`too slow`)');
+
+           hasPlayedCutscene = true;
+
+           event.cancel(); // CANCEL THE COUNTDOWN!
+
+           startVideo();
+        }
+    }
+
+  function startVideo() {
+     VideoCutscene.play(Paths.videos('tooslowcutscene2'));
+  }
+}
+

@@ -1,0 +1,104 @@
+{
+	"version": "1.0.0",
+	"offsets": [
+		80,
+		90
+	],
+	"renderType": "sparrow",
+	"danceEvery": 1,
+	"scale": 1,
+	"name": "Sonic.exe (Sonic Impersonation)",
+	"flipX": false,
+	"cameraOffsets": [
+		-50,
+		90
+	],
+	"isPixel": false,
+	"singTime": 4,
+	"startingAnimation": "idle",
+	"assetPath": "characters/Sonic_FakerForm",
+	"healthIcon": {
+		"offsets": [
+			0,
+			0
+		],
+		"isPixel": false,
+		"scale": 1,
+		"flipX": false,
+		"id": "sonicfake"
+	},
+	"animations": [
+		{
+			"offsets": [
+				137,
+				129
+			],
+			"flipY": false,
+			"frameRate": 24,
+			"prefix": "Sonic Up Faker",
+			"looped": false,
+			"name": "singUP",
+			"flipX": false
+		},
+		{
+			"offsets": [
+				138,
+				121
+			],
+			"flipY": false,
+			"frameRate": 24,
+			"prefix": "Sonic Right Faker",
+			"looped": false,
+			"name": "singRIGHT",
+			"flipX": false
+		},
+		{
+			"offsets": [
+				149,
+				96
+			],
+			"flipY": false,
+			"frameRate": 24,
+			"prefix": "Sonic Down Faker",
+			"looped": false,
+			"name": "singDOWN",
+			"flipX": false
+		},
+		{
+			"offsets": [
+				143,
+				105
+			],
+			"flipY": false,
+			"frameRate": 24,
+			"prefix": "Sonic Left Faker",
+			"looped": false,
+			"name": "singLEFT",
+			"flipX": false
+		},
+		{
+			"offsets": [
+				27,
+				-44
+			],
+			"flipY": false,
+			"frameRate": 24,
+			"prefix": "Sonic Reveal",
+			"looped": false,
+			"name": "Revealed",
+			"flipX": false
+		},
+		{
+			"offsets": [
+				140,
+				100
+			],
+			"flipY": false,
+			"frameRate": 24,
+			"prefix": "Sonic Faker Idle",
+			"looped": false,
+			"name": "idle",
+			"flipX": false
+		}
+	]
+}
