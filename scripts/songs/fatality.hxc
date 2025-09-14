@@ -1,5 +1,6 @@
 import funkin.play.song.Song;
 import funkin.modding.module.ModuleHandler;
+import funkin.play.PlayState;
 
 class FatalitySong extends Song {
     public function new() {
@@ -10,6 +11,7 @@ class FatalitySong extends Song {
         super.onCreate(event);
 
         ModuleHandler.getModule('SwappingNotestyles').scriptCall('swapOpponentStrumlines', ['exeFatalOpp']);
+        PlayState.instance.opponentStrumline.fadeInArrows();
     }
     
     override function onSongRetry(event:ScriptEvent):Void {

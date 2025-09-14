@@ -105,6 +105,7 @@ class EXEHud extends Module
         }
         
         if (PlayState.instance.healthBarBG != null && PlayState.instance.healthBar != null) {
+            //PlayState.instance.healthBarBG.setPosition(PlayState.instance.healthBar.x - 6, PlayState.instance.healthBar.y - 5);
             PlayState.instance.healthBarBG.setPosition(PlayState.instance.healthBar.x + - 28, PlayState.instance.healthBar.y - 7);
         }
         
@@ -142,7 +143,7 @@ class EXEHud extends Module
         
         // Move HUD elements to the right for fatalZone stage
         var currentStage = PlayState.instance.currentStage?.id ?? "";
-        if (currentStage == "fatalZone" && doRetroAspectRatio) {
+        if (currentStage == "fatalZone" && doRetroAspectRatio && FlxG.onMobile) {
             textX = 160;
         } else {
             textX = 20; // Default position
@@ -429,7 +430,7 @@ class EXEHud extends Module
     
     override function onNoteMiss(ev:ScriptEvent) {
         super.onNoteMiss(ev);
-        if (!inPlay || ev.healthChange == 0 || ev.note.noteData.kind == "phantomnote") return;
+        if (!inPlay || ev.healthChange == 0) return;
         
         misses++;
     }

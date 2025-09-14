@@ -13,23 +13,64 @@ import flixel.FlxSprite;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import funkin.modding.module.ModuleHandler;
+import funkin.ui.FullScreenScaleMode;
+import flixel.system.scaleModes.RatioScaleMode;
+import lime.app.Application;
+import flixel.math.FlxRandom;
+import funkin.play.ResultState;
+import funkin.util.TouchUtil;
+import funkin.input.Cursor;
 
 class FatalZone extends Stage
 {
 	var statix:FunkinSprite;
 	var leftBorder:FlxSprite;
 	var rightBorder:FlxSprite;
-	var fatalCursor:FlxSprite;
+	var IsWindowMoving:Bool = false;
 
-	var popups:Array<FlxSprite>;
-	public var popupTimer:FlxTimer;
-	public var popup = FunkinSprite.create(FlxG.random.float(0, FlxG.width - 300), FlxG.random.float(0, FlxG.height - 300)); // Insert popup as a class-level variable
+    var Xamount = 0;
+    var Yamount = 0;
+    var windowX = 0;
+    var windowY = 0;
+	
+	var errorRandom:FlxRandom = new FlxRandom(666); // so that every time you play the song, the error popups are in the same place
+
 
 	public function new()
 	{
 		super("fatalZone");
 	}
+	
+	override function onSubStateOpenEnd(event) {
+		super.onSubStateOpenEnd(event);
+		if (Std.isOfType(event.targetState, ResultState) && screenRatioEdit) {
+			if (!FlxG.onMobile) {
+				var wasFullscreen = Application.current.window.fullscreen;
+				Application.current.window.fullscreen = false;
+				var wideScreen = (26 * 6) + 4;
 
+				FlxG.initialWidth = FlxG.width = 1280;
+				FlxG.initialHeight = FlxG.height = 720;
+				FlxG.stage.stageWidth = 1280;
+				FlxG.resizeWindow(1280, 720);
+				for (cameras in FlxG.cameras.list) {
+					cameras.width = FlxG.initialWidth;
+					cameras.height = FlxG.initialHeight;
+				}
+				FlxG.camera.width = FlxG.initialWidth;
+				FlxG.camera.height = FlxG.initialHeight;
+    			var resolutionX = Math.ceil(Application.current.window.display.currentMode.width * Application.current.window.scale);
+    			var resolutionY = Math.ceil(Application.current.window.display.currentMode.height * Application.current.window.scale);
+    			Application.current.window.x = (resolutionX - Application.current.window.width) / 2;
+    			Application.current.window.y = (resolutionY - Application.current.window.height) / 2;
+
+				FlxG.scaleMode = new FullScreenScaleMode(); // Change the mode to recenter the game
+				//Return to fullscreen to fix the camera offset weirdness
+				if (wasFullscreen) Application.current.window.fullscreen = true;
+			}
+		}
+	}
+	
 	override function onCreate(event:ScriptEvent):Void
 	{
 		super.onCreate(event);
@@ -58,164 +99,229 @@ class FatalZone extends Stage
 		};
 
 		if (screenRatioEdit) {
-			leftBorder = new FlxSprite(0, 0).makeGraphic(50, FlxG.height, 0xFF000000);
-			leftBorder.scrollFactor.set(0, 0);
-			leftBorder.scale.set(5, 3);
-			leftBorder.cameras = [game.camHUD];
-			game.add(leftBorder);
+			if (FlxG.onMobile) {
+				leftBorder = new FlxSprite(0, 0).makeGraphic(50, FlxG.height, 0xFF000000);
+				leftBorder.scrollFactor.set(0, 0);
+				leftBorder.scale.set(5, 3);
+				leftBorder.cameras = [game.camHUD];
+				game.add(leftBorder);
 
-			rightBorder = new FlxSprite(FlxG.width - 50, 0).makeGraphic(50, FlxG.height, 0xFF000000);
-			rightBorder.scrollFactor.set(0, 0);
-			rightBorder.scale.set(5, 3);
-			rightBorder.cameras = [game.camHUD];
-			game.add(rightBorder);
+				rightBorder = new FlxSprite(FlxG.width - 50, 0).makeGraphic(50, FlxG.height, 0xFF000000);
+				rightBorder.scrollFactor.set(0, 0);
+				rightBorder.scale.set(5, 3);
+				rightBorder.cameras = [game.camHUD];
+				game.add(rightBorder);
+			} else {
+				var wasFullscreen = Application.current.window.fullscreen;
+				Application.current.window.fullscreen = false;
+				var wideScreen = (26 * 6) + 4;
+
+				FlxG.initialWidth = FlxG.width = 960;
+				FlxG.initialHeight = FlxG.height = 720;
+				FlxG.stage.stageWidth = 960;
+				FlxG.resizeWindow(960, 720);
+				for (cameras in FlxG.cameras.list) {
+					cameras.width = FlxG.initialWidth;
+					cameras.height = FlxG.initialHeight;
+				}
+				FlxG.camera.width = FlxG.initialWidth;
+				FlxG.camera.height = FlxG.initialHeight;
+    			var resolutionX = Math.ceil(Application.current.window.display.currentMode.width * Application.current.window.scale);
+    			var resolutionY = Math.ceil(Application.current.window.display.currentMode.height * Application.current.window.scale);
+    			Application.current.window.x = (resolutionX - Application.current.window.width) / 2;
+    			Application.current.window.y = (resolutionY - Application.current.window.height) / 2;
+
+				FlxG.scaleMode = new RatioScaleMode(); // Change the mode to recenter the game
+				//Return to fullscreen to fix the camera offset weirdness
+				if (wasFullscreen) Application.current.window.fullscreen = true;
+			}
 		}
 
 		if (doFatalPopups) {
-			fatalCursor = new FlxSprite();
-			fatalCursor.loadGraphic(Paths.image('fatal_mouse_cursor'));
-			fatalCursor.scrollFactor.set(0, 0);
-			fatalCursor.cameras = [game.camHUD];
-			fatalCursor.setGraphicSize(Std.int(fatalCursor.width * 1.5), Std.int(fatalCursor.height * 1.5));
-			fatalCursor.updateHitbox();
-			fatalCursor.antialiasing = false;
-			game.add(fatalCursor);
-
-			fatalCursor.zIndex = 9999;
-			fatalCursor.cameras = [game.camCutscene];
-			PlayState.instance.currentStage.refresh();
-
-			FlxG.mouse.visible = false;
-
-			popups = [];
+			FlxG.mouse.visible = true;
+			FlxG.mouse.unload();
+			FlxG.log.add("Sexy mouse cursor " + Paths.image("fatal_mouse_cursor"));
+			FlxG.mouse.load(Assets.getBitmapData(Paths.image('fatal_mouse_cursor')), 1.5, 0);
 			popupTimer = new FlxTimer();
-		}
-	}
-
-	function createPopup():Void
-	{
-		if (doFatalPopups && !PlayState.instance.isGamePaused) {
-			var popup = FunkinSprite.create(
-				FlxG.random.float(0, FlxG.width - 400), // Random X position, adjusted for popup width
-				FlxG.random.float(0, FlxG.height - 300) // Random Y position, adjusted for popup height
-			);
-			popup.frames = Paths.getSparrowAtlas('error_popups');
-			if (popup.frames != null) {
-				popup.animation.addByPrefix('popup_anim', 'idle', 24, false);
-				popup.animation.addByPrefix('bye', 'bye', 24, false);
-				popup.animation.play('popup_anim');
-			}
-			popup.scrollFactor.set(0, 0);
-			popup.cameras = [game.camHUD];
-			popup.scale.set(1.6, 1.6);
-			popup.zIndex = 8000;
-			popup.updateHitbox();
-			popup.antialiasing = false;
-			game.add(popup);
-			popups.push(popup);
-
-			PlayState.instance.currentStage.refresh();
 		}
 	}
 
 	function clearPopups():Void
 	{
 		if (doFatalPopups) {
-			for (popup in popups)
-			{
-				game.remove(popup);
-				popup.destroy();
-			}
-			popups = [];
+			while(FatalPopup.popups.length>0)
+				FatalPopup.popups[0].close();
 		}
 	}
 
-	function clearPopupsQuickly():Void
-	{
-		if (doFatalPopups) {
-			var delay:Float = 0;
-			for (popup in popups)
-			{
-				if (popup != null)
-				{
-					var timer = new FlxTimer();
-					timer.start(delay, function(timer:FlxTimer):Void {
-						removePopup(popup);
-					});
-					delay += 0.07; // Reduced delay for faster removal
+	function managePopups(){
+		if (FlxG.mouse.justPressed || TouchUtil.justPressed){
+			trace("click :)");
+			for(idx in 0...FatalPopup.popups.length){
+				var realIdx = (FatalPopup.popups.length - 1) - idx;
+				var popup = FatalPopup.popups[realIdx];
+				var hitShit:Bool=false;
+				for(camera in popup.cameras){
+					@:privateAccess
+					var hitOK = popup.clickDetector.overlapsPoint(FlxG.mouse.getWorldPosition(camera, popup.clickDetector._point), true, camera);
+					if (FlxG.onMobile) hitOK = TouchUtil.overlapsComplex(popup, camera);
+					if (hitOK){
+						popup.close();
+						hitShit=true;
+						break;
+					}
 				}
+				if(hitShit)break;
 			}
 		}
 	}
 
-	function removePopup(popup:FlxSprite):Void
-	{
-		if (doFatalPopups && popup != null && popup.animation != null) {
-			popup.animation.play('bye');
-			popup.animation.finishCallback = function() {
-				if (popup != null) {
-					game.remove(popup); // Remove the popup from the game
-					popups.remove(popup); // Remove the popup from the array
-					popup.destroy(); // Destroy the popup to free memory
+	public override function onDestroy(event) {
+		super.onDestroy(event);
+		if (doFatalPopups) Cursor.hide();
+		if (screenRatioEdit) {
+			if (!FlxG.onMobile && FlxG.width != 1280) {
+				var wasFullscreen = Application.current.window.fullscreen;
+				Application.current.window.fullscreen = false;
+				var wideScreen = (26 * 6) + 4;
+
+				FlxG.initialWidth = FlxG.width = 1280;
+				FlxG.initialHeight = FlxG.height = 720;
+				FlxG.stage.stageWidth = 1280;
+				FlxG.resizeWindow(1280, 720);
+				for (cameras in FlxG.cameras.list) {
+					cameras.width = FlxG.initialWidth;
+					cameras.height = FlxG.initialHeight;
 				}
-			};
+				FlxG.camera.width = FlxG.initialWidth;
+				FlxG.camera.height = FlxG.initialHeight;
+    			var resolutionX = Math.ceil(Application.current.window.display.currentMode.width * Application.current.window.scale);
+    			var resolutionY = Math.ceil(Application.current.window.display.currentMode.height * Application.current.window.scale);
+    			Application.current.window.x = (resolutionX - Application.current.window.width) / 2;
+    			Application.current.window.y = (resolutionY - Application.current.window.height) / 2;
+
+				FlxG.scaleMode = new FullScreenScaleMode(); // Change the mode to recenter the game
+				//Return to fullscreen to fix the camera offset weirdness
+				if (wasFullscreen) Application.current.window.fullscreen = true;
+			}
 		}
+	}
+
+	public override function onSongEnd(event) {
+		super.onSongEnd(event);
+		if (doFatalPopups) Cursor.hide();
+		if (screenRatioEdit) {
+			if (!FlxG.onMobile) {
+				var wasFullscreen = Application.current.window.fullscreen;
+				Application.current.window.fullscreen = false;
+				var wideScreen = (26 * 6) + 4;
+
+				FlxG.initialWidth = FlxG.width = 1280;
+				FlxG.initialHeight = FlxG.height = 720;
+				FlxG.stage.stageWidth = 1280;
+				FlxG.resizeWindow(1280, 720);
+				for (cameras in FlxG.cameras.list) {
+					cameras.width = FlxG.initialWidth;
+					cameras.height = FlxG.initialHeight;
+				}
+				FlxG.camera.width = FlxG.initialWidth;
+				FlxG.camera.height = FlxG.initialHeight;
+    			var resolutionX = Math.ceil(Application.current.window.display.currentMode.width * Application.current.window.scale);
+    			var resolutionY = Math.ceil(Application.current.window.display.currentMode.height * Application.current.window.scale);
+    			Application.current.window.x = (resolutionX - Application.current.window.width) / 2;
+    			Application.current.window.y = (resolutionY - Application.current.window.height) / 2;
+
+				FlxG.scaleMode = new FullScreenScaleMode(); // Change the mode to recenter the game
+				//Return to fullscreen to fix the camera offset weirdness
+				if (wasFullscreen) Application.current.window.fullscreen = true;
+			}
+		}
+	}
+
+	public override function onSongEvent(scriptEvent:SongEventScriptEvent) {
+		super.onSongEvent(scriptEvent);
+		switch (scriptEvent.eventData.eventKind) {
+			case "Fatality Popup": 
+				if (doFatalPopups) {
+					var eventProps = scriptEvent.eventData.value;
+
+					var value:Int = Std.parseInt(eventProps.value1);
+					if (eventProps.value1 == '' || value < 1)
+						value = 1;
+
+					var type:Int = Std.parseInt(eventProps.value2);
+					if (eventProps.value2 == '' || type < 1)
+						type = 1;
+					for(idx in 0...value){
+						doPopup(type);
+					}
+				}
+			case "Clear Popups": clearPopups();
+		}
+	}	
+
+	function doPopup(type) {
+		var popup = new FatalPopup(0, 0, type);
+		var popuppos:Array<Int> = [errorRandom.int(0, Std.int(FlxG.width - popup.width)), errorRandom.int(0, Std.int(FlxG.height - popup.height))];
+		popup.x = popuppos[0];
+		popup.y = popuppos[1];
+		popup.cameras = [PlayState.instance.camCutscene];
+		PlayState.instance.add(popup);
+	}
+
+	function shakescreen()
+	{
+		new FlxTimer().start(0.01, function(tmr:FlxTimer)
+		{
+			Application.current.window.move(Application.current.window.x + FlxG.random.int(-10, 10), Application.current.window.y + FlxG.random.int(-8, 8));
+		}, 50);
 	}
 
 	override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-
+		if (IsWindowMoving && modChartsEnabled && !FlxG.onMobile) {
+			var thisX:Float = Math.sin(Xamount * (Xamount)) * 100;
+			var thisY:Float = Math.sin(Yamount * (Yamount)) * 100;
+			var yVal = Std.int(windowY + thisY);
+			var xVal = Std.int(windowX + thisX);
+			if (!Application.current.window.fullscreen) Application.current.window.move(xVal, yVal);
+			Yamount = Yamount + 0.0015;
+			Xamount = Xamount + 0.00075;
+		}
 		if (doFatalPopups) {
-			var mousePos = FlxG.mouse.getWorldPosition(game.camHUD); 
-			fatalCursor.x = mousePos.x - (fatalCursor.width / 2);
-			fatalCursor.y = mousePos.y - (fatalCursor.height / 2);
-
-			fatalCursor.scale.set(1 + 0.05 * Math.sin(FlxG.game.ticks / 10), 1 + 0.05 * Math.sin(FlxG.game.ticks / 10));
-
-			if (FlxG.mouse.justPressed)
-			{
-				var mousePos = FlxG.mouse.getWorldPosition(game.camHUD);
-				for (popup in popups)
-				{
-					if (popup.overlapsPoint(mousePos, true))
-					{
-						removePopup(popup);
-						break;
-					}
-				}
-			}
-
-			// Remove popups that have finished their "bye" animation
-			for (popup in popups)
-			{
-				if (popup.animation.curAnim != null && popup.animation.curAnim.name == 'bye' && popup.animation.curAnim.finished)
-				{
-					game.remove(popup);
-					popups.remove(popup);
-					popup.destroy();
-				}
-			}
+			managePopups();
 		}
 	}
 
 	function onCountdownStart()
 	{
+		PlayState.instance.playerStrumline.noteHoldCovers.clear();
+		IsWindowMoving = false;
+		Xamount = 0;
+		Yamount = 0;
 		if (PlayState.instance.opponentStrumline != null && PlayState.instance.playerStrumline != null) {
 			originalPlayerStrumlineX = PlayState.instance.playerStrumline.x;
 			originalOpponentStrumlineX = PlayState.instance.opponentStrumline.x;
 			originalOpponentStrumlineVisible = PlayState.instance.opponentStrumline.visible;
 			
 			if (screenRatioEdit && !FlxG.onMobile) {
-				PlayState.instance.opponentStrumline.x = 150;
-				PlayState.instance.playerStrumline.x = 692;
+				PlayState.instance.playerStrumline.x = (FlxG.width / 2 + 24);
+				PlayState.instance.opponentStrumline.x = 24;
+				//PlayState.instance.opponentStrumline.x = 150;
+				//PlayState.instance.playerStrumline.x = 692;
 			}
 		}
 	}
 
-	override function buildStage()
+	function windowGoBack()
 	{
-		super.buildStage();
+		new FlxTimer().start(0.01, function(tmr:FlxTimer)
+		{
+			var xLerp:Float = FlxMath.lerp(windowX, Application.current.window.x, 0.95);
+			var yLerp:Float = FlxMath.lerp(windowY, Application.current.window.y, 0.95);
+			Application.current.window.move(Std.int(xLerp), Std.int(yLerp));
+		}, 20);
 	}
 
 	function onStepHit(event:SongTimeScriptEvent):Void
@@ -224,88 +330,75 @@ class FatalZone extends Stage
 		var phase2bg = getNamedProp('fatalityBg3');
 		var phase3bg = getNamedProp('fatalityBg4');
 
-		if (event.step == 257)
-		{
-			statix.visible = true;
-			statix.animation.play('static');
+		switch (event.step) {
+			case 257:
+				statix.visible = true;
+				statix.animation.play('static');
 
-			if (statix != null) {
-				var timer = new FlxTimer();
-				timer.start(0.12, function(timer:FlxTimer):Void {
-					statix.visible = false;
-				});
-			}
+				if (statix != null) {
+					var timer = new FlxTimer();
+					timer.start(0.12, function(timer:FlxTimer):Void {
+						statix.visible = false;
+					});
+				}
 			
-			phase2bg.zIndex = 11;
-			phase2.zIndex = 12;
-			PlayState.instance.currentStage.refresh();
+				phase2bg.zIndex = 11;
+				phase2.zIndex = 12;
+				PlayState.instance.currentStage.refresh();
+			case 1984:
+				Xamount += 2;
+				Yamount += 2;
+				windowX = Application.current.window.x;
+				windowY = Application.current.window.y;
+				IsWindowMoving = true;
+				statix.visible = true;
+				statix.animation.play('static');
 
-			if (doFatalPopups) {
-				popupTimer.start(2, function(timer:FlxTimer):Void {
-					createPopup();
-				}, 0);
-			}
-		}
+				if (statix != null) {
+					var timer2 = new FlxTimer();
+					timer2.start(0.12, function(timer:FlxTimer):Void {
+						statix.visible = false;
+					});
+				}
 
-		if (event.step == 513)
-		{
-			if (doFatalPopups) {
-				popupTimer.start(event.beat % 2 == 0, function(timer:FlxTimer):Void {
-					createPopup();
-				}, 0);
-			}
-		}
-
-		if (event.step == 897)
-		{
-			if (doFatalPopups) {
-				clearPopups();
-				popupTimer.start(2, function(timer:FlxTimer):Void {
-					createPopup();
-				}, 0);
-			}
-		}
-
-		if (event.step == 1727)
-		{
-			if (doFatalPopups) {
-				clearPopupsQuickly();
-			}
-		}
-
-		if (event.step == 1984)
-		{
-			if (doFatalPopups) {
-				clearPopups();
-				popupTimer.start(event.beat % 1 == 0, function(timer:FlxTimer):Void { // Intense
-					createPopup();
-				}, 0);
-			}
+				if (modChartsEnabled && !FlxG.onMobile) {
+				    PlayState.instance.playerStrumline.x = FlxG.width / 2 - PlayState.instance.playerStrumline.width / 2;
+					PlayState.instance.playerStrumline.noteHoldCovers.clear();
+				    PlayState.instance.opponentStrumline.visible = false;
+				}
 			
-			statix.visible = true;
-			statix.animation.play('static');
-
-			if (statix != null) {
-				var timer2 = new FlxTimer();
-				timer2.start(0.12, function(timer:FlxTimer):Void {
-					statix.visible = false;
-				});
-			}
-
-			if (modChartsEnabled && !FlxG.onMobile) {
-			    PlayState.instance.playerStrumline.x = FlxG.width / 2 - PlayState.instance.playerStrumline.width / 2;
-			    PlayState.instance.opponentStrumline.visible = false;
-			}
-			
-			phase3bg.zIndex = 20;
-			PlayState.instance.currentStage.refresh(); // Apply Z-Index.
-
-		}
-		if (event.step == 2527)
-		{
-			if (doFatalPopups) {
-				clearPopupsQuickly();
-			}
+				phase3bg.zIndex = 20;
+				PlayState.instance.currentStage.refresh(); // Apply Z-Index.
+			case 2208:
+				IsWindowMoving = false;
+			case 2230:
+				shakescreen();
+				PlayState.instance.camGame.shake(0.02, 0.8);
+				PlayState.instance.camHUD.shake(0.02, 0.8);
+			case 2240:
+				IsWindowMoving = true;
+			case 2528:
+				shakescreen();
+				IsWindowMoving = true;
+				Yamount += 3;
+				Xamount += 3;
+				PlayState.instance.camGame.shake(0.02, 2);
+				PlayState.instance.camHUD.shake(0.02, 2);
+			case 2530:
+				shakescreen();
+			case 2535:
+				shakescreen();
+			case 2540:
+				shakescreen();
+			case 2545:
+				shakescreen();
+			case 2550:
+				shakescreen();
+			case 2555:
+				shakescreen();
+			case 2560:
+				IsWindowMoving = false;
+				windowGoBack();
 		}
 	}
 }
