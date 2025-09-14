@@ -1,0 +1,67 @@
+import funkin.play.event.SongEvent;
+import funkin.play.PlayState;
+
+//Fucking Markov lags without this
+class FatalityPopupsEvent extends SongEvent {
+    function new() {
+        super('Fatality Popup');
+    }
+
+    override function handleEvent(data) {
+        if (PlayState.instance == null || PlayState.instance.currentStage == null) return;
+        if (PlayState.instance.isMinimalMode) return;
+    }
+
+    override function getEventSchema() {
+        return [
+            {
+                name: "value1",
+                title: "Popup Type",
+                defaultValue: "",
+                type: "string"
+            },
+            {
+                name: "value2",
+                title: "Value 2",
+                defaultValue: "",
+                type: "string"
+            }
+        ];
+    }
+
+    override function getTitle() {
+        return "Fatality Popup";
+    }
+}
+
+class ClearPopupsEvents extends SongEvent {
+    function new() {
+        super('Clear Popups');
+    }
+
+    override function handleEvent(data) {
+        if (PlayState.instance == null || PlayState.instance.currentStage == null) return;
+        if (PlayState.instance.isMinimalMode) return;
+    }
+
+    override function getEventSchema() {
+        return [
+            {
+                name: "value1",
+                title: "Value 1",
+                defaultValue: "",
+                type: "string"
+            },
+            {
+                name: "value2",
+                title: "Value 2",
+                defaultValue: "",
+                type: "string"
+            }
+        ];
+    }
+
+    override function getTitle() {
+        return "Move Window";
+    }
+}
