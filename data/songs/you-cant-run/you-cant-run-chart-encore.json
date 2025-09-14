@@ -298,29 +298,29 @@
       "t": 13714.2857142857,
       "e": "PlayAnimation",
       "v": {
+	"target": "dad",
+	"anim": "laugh",
+	"force": true
+}
+    },
+    {
+      "t": 13928.5714285714,
+      "e": "Play Animation",
+      "v": {
+	"value1": "laugh",
+	"value2": "dad"
+}
+    },
+    {
+      "t": 13928.5714285714,
+      "e": "PlayAnimation",
+      "v": {
 	"force": true,
 	"anim": "laugh",
 	"target": "dad"
 }
     },
     {
-      "t": 13928.5714285714,
-      "e": "Play Animation",
-      "v": {
-	"value1": "laugh",
-	"value2": "dad"
-}
-    },
-    {
-      "t": 13928.5714285714,
-      "e": "PlayAnimation",
-      "v": {
-	"target": "dad",
-	"anim": "laugh",
-	"force": true
-}
-    },
-    {
       "t": 14142.8571428571,
       "e": "Play Animation",
       "v": {
@@ -332,18 +332,18 @@
       "t": 14142.8571428571,
       "e": "PlayAnimation",
       "v": {
-	"target": "dad",
+	"force": true,
 	"anim": "laugh",
-	"force": true
+	"target": "dad"
 }
     },
     {
       "t": 14357.1428571429,
       "e": "PlayAnimation",
       "v": {
-	"target": "dad",
+	"force": true,
 	"anim": "laugh",
-	"force": true
+	"target": "dad"
 }
     },
     {
@@ -358,9 +358,9 @@
       "t": 14571.4285714286,
       "e": "PlayAnimation",
       "v": {
-	"target": "dad",
+	"force": true,
 	"anim": "laugh",
-	"force": true
+	"target": "dad"
 }
     },
     {
@@ -375,9 +375,9 @@
       "t": 14785.7142857143,
       "e": "PlayAnimation",
       "v": {
-	"force": true,
+	"target": "dad",
 	"anim": "laugh",
-	"target": "dad"
+	"force": true
 }
     },
     {
@@ -400,9 +400,9 @@
       "t": 15000,
       "e": "PlayAnimation",
       "v": {
-	"force": true,
+	"target": "dad",
 	"anim": "laugh",
-	"target": "dad"
+	"force": true
 }
     },
     {
@@ -712,13 +712,21 @@
 }
     },
     {
+      "t": 56553.5714285714,
+      "e": "NoteSwapEvent",
+      "v": {
+	"strumline": "both",
+	"notestyle": "exePixel"
+}
+    },
+    {
       "t": 56571.4285714286,
       "e": "ZoomCamera",
       "v": {
-	"ease": "INSTANT",
 	"duration": 4,
-	"zoom": 1.35,
-	"mode": "stage"
+	"ease": "INSTANT",
+	"mode": "stage",
+	"zoom": 1.35
 }
     },
     {
@@ -733,11 +741,11 @@
       "t": 56642.8571428571,
       "e": "FocusCamera",
       "v": {
-	"duration": 4,
 	"x": 0,
+	"duration": 4,
 	"y": 0,
-	"char": 1,
-	"ease": "INSTANT"
+	"ease": "INSTANT",
+	"char": 1
 }
     },
     {
@@ -909,6 +917,14 @@
 }
     },
     {
+      "t": 83982.1428571428,
+      "e": "NoteSwapEvent",
+      "v": {
+	"strumline": "both",
+	"notestyle": "exeFourKey"
+}
+    },
+    {
       "t": 84000,
       "e": "Change Character",
       "v": {
@@ -917,14 +933,24 @@
 }
     },
     {
+      "t": 84017.8571428571,
+      "e": "ZoomCamera",
+      "v": {
+	"ease": "INSTANT",
+	"duration": 4,
+	"zoom": 1,
+	"mode": "stage"
+}
+    },
+    {
       "t": 84160.7142857143,
       "e": "FocusCamera",
       "v": {
-	"duration": 4,
 	"x": 0,
+	"duration": 4,
 	"y": 0,
-	"char": 1,
-	"ease": "INSTANT"
+	"ease": "INSTANT",
+	"char": 1
 }
     },
     {
@@ -1700,19 +1726,6 @@
       "v": {
 	"value1": "0.020",
 	"value2": "0.01"
-}
-    },
-    {
-      "t": 140357.142857143,
-      "e": "PlayVideo",
-      "v": {
-	"zIndex": 300,
-	"isCutscene": 3,
-	"duration": 1,
-	"mute": true,
-	"disableControl": false,
-	"path": "ycrencoreanim",
-	"resync": true
 }
     },
     {

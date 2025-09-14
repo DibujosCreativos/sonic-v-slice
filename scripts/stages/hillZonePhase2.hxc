@@ -1,5 +1,6 @@
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.FlxCamera;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -20,8 +21,8 @@ class HillZonePhase2 extends Stage {
     }
 
     public var doScreenStatic:Bool = true;
-
-    public var doRedVignette:Bool = false;
+    public var doCameraShake:Bool = true;
+    public var allowCameraShake:Bool = true; // Used to disable camera shake via script
 
     // Black things
     public var blackOverlay:FlxSprite;
@@ -41,6 +42,9 @@ class HillZonePhase2 extends Stage {
         super.onCreate(event);
 
         FunkinMemory.cacheSound(Paths.sound("staticBUZZ", "shared"));
+
+        doCameraShake = ModuleHandler.getModule("EXEOptions").scriptGet("doCameraShake");
+        doScreenStatic = ModuleHandler.getModule("EXEOptions").scriptGet("screenstatic");
 
         greenHill = getNamedProp('GreenHill');
 
@@ -78,11 +82,30 @@ class HillZonePhase2 extends Stage {
         estaguyAnimation.bitmap.volumeAdjust = 0;
         estaguyAnimation.load('videos/videos/ycrencoreanimation.mp4');
     }
+	function onNoteHit(event:HitNoteScriptEvent)
+    {
+        super.onNoteHit(event);
+
+        if (!event.note.noteData.getMustHitNote())
+        {
+            if (doCameraShake && allowCameraShake)
+            {
+                if (event.note.holdNoteSprite != null)
+                {
+                    FlxG.camera.shake(0.01, event.note.holdNoteSprite.sustainLength/1000);
+                } else {
+                    FlxG.camera.shake(0.01, 0.2);
+                }
+            }
+        }
+    }
     function startVideo():Void {
         estaguyAnimation.play();
         PlayState.instance.add(estaguyAnimation);
         new FlxTimer().start(14.2, function(timer:FlxTimer) { // The video is 14 seconds long
+            estaguyAnimation.stop();
             PlayState.instance.remove(estaguyAnimation);
+            //estaguyAnimation.destroy(); < -- This would make the video not replay if the song is restarted
 		});
     }
     public function screenStatic():Void {
@@ -124,23 +147,28 @@ class HillZonePhase2 extends Stage {
 			getNamedProp('GreenHill').scale.set(9.6, 9);
 		}
 	}
-    function doVignette():Void {
-        if (!doRedVignette) return;
+    function doVignette(mode:String):Void {
 
-        redVignette.visible = true;
-        redVignette.alpha = 0;
-
-        FlxTween.tween(redVignette, { alpha: 0.5 }, 0.75, {
-            ease: FlxEase.quadInOut,
-            onComplete: function(tween:FlxTween) {
-                FlxTween.tween(redVignette, { alpha: 0 }, 0.75, {
+        switch (mode) {
+            case "off":
+                if (!redVignette != null) {
+                    FlxTween.cancelTweensOf(redVignette);
+                    redVignette.alpha = 0;
+                }
+                return;
+            case "on":
+                FlxTween.tween(redVignette, { alpha: 0.5 }, 0.75, {
                     ease: FlxEase.quadInOut,
                     onComplete: function(tween:FlxTween) {
-                        redVignette.visible = false;
+                        FlxTween.tween(redVignette, { alpha: 0 }, 0.75, {
+                            ease: FlxEase.quadInOut,
+                        });
                     }
                 });
-            }
-        });        
+                return;
+            default:
+                return;
+        }
     }
     override function onSongRetry(event:ScriptEvent):Void {
 		super.onSongRetry(event);
@@ -159,8 +187,7 @@ class HillZonePhase2 extends Stage {
             screenStatic();
 		}
         if (event.step >= 80 && event.step % 20 == 0) {
-            doRedVignette = true;
-            doVignette();
+            doVignette("on");
         }
 
         // DEFAULT
@@ -169,11 +196,13 @@ class HillZonePhase2 extends Stage {
                 case 527:
                     switchStageArea("greenHill");
                     screenStatic();
-                    doRedVignette = false;
+                    doVignette("off");
+                    allowCameraShake = false;
                 case 783:
                     switchStageArea("normal");
                     screenStatic();
-                    doRedVignette = true;
+                    doVignette("on");
+                    allowCameraShake = true;
             }
         }
         
@@ -181,19 +210,26 @@ class HillZonePhase2 extends Stage {
         if (PlayState.instance.currentVariation == "encore") {
             switch (event.step) {
                 case 528:
-                    dad.x = dad.x + 700;
+                    dad.x = dad.x + 720;
                     dad.y = dad.y + 900;
+                    dad.cameraFocusPoint.x = dad.cameraFocusPoint.x + -350;
+                    dad.cameraFocusPoint.y = dad.cameraFocusPoint.y + -200;
                     switchStageArea("greenHill");
                     screenStatic();
-                    doRedVignette = false;
-                case 784:
+                    doVignette("off");
+                    allowCameraShake = false;
+                case 786:
                     switchStageArea("normal");
                     screenStatic();
-                    doRedVignette = true;
+                    doVignette("on");
+                    allowCameraShake = true;
                 case 1296:
                     FlxTween.tween(blackOverlay, { alpha: 1 }, 1);
-                case 1310:
+                case 1308:
                     startVideo();
+                case 1439:
+                    PlayState.instance.camCutscene.flash(0xFFFFFFFF, 1);
+                    blackOverlay.alpha = 0;
             }
         }
     }

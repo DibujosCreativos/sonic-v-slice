@@ -40,7 +40,8 @@ class EXEOptions extends Module
     public var exebackingCard:String = "Dad";
     public var quickTimeEvents:Bool = true;
     public var doSongIntroCards:Bool = true;
-    public var doWarningScreen:Bool = true; // Mobile Warning Screen
+    public var doCameraShake:Bool = true;
+    //public var doWarningScreen:Bool = true; // Mobile Warning Screen
 
 
     public function new(){
@@ -74,6 +75,7 @@ class EXEOptions extends Module
         if(Save.instance.modOptions["bonusfeatures"] == null) Save.instance.modOptions["bonusfeatures"] = true;
         if(Save.instance.modOptions["quickTimeEvents"] == null) Save.instance.modOptions["quickTimeEvents"] = true;
         if(Save.instance.modOptions["doSongIntroCards"] == null) Save.instance.modOptions["doSongIntroCards"] = true;
+        if(Save.instance.modOptions["doCameraShake"] == null) Save.instance.modOptions["doCameraShake"] = true;
 
         if (!FlxG.onMobile) {
             ghosttap = Save.instance.modOptions["ghosttap"];
@@ -101,6 +103,7 @@ class EXEOptions extends Module
         quickTimeEvents = Save.instance.modOptions["quickTimeEvents"];
         doSongIntroCards = Save.instance.modOptions["doSongIntroCards"];
         doWarningScreen = Save.instance.modOptions["doWarningScreen"];
+        doCameraShake = Save.instance.modOptions["doCameraShake"];
     }
 
     public var inOptions:Bool = false;
@@ -181,6 +184,12 @@ class EXEOptions extends Module
                 screenstatic = value;
                 Save.instance.flush();
             }, Save.instance.modOptions["screenstatic"]);
+
+            prefs.createPrefItemCheckbox("Camera Shake", "Enables camera shake on note hit for certain characters. \nScripted camera shakes will not be affected.", function(value) {
+                Save.instance.modOptions["doCameraShake"] = value;
+                screenstatic = value;
+                Save.instance.flush();
+            }, Save.instance.modOptions["doCameraShake"]);
 
             prefs.createPrefItemCheckbox("Note Camera Movement", "Makes the camera move depending on the direction of the note you hit.", function(value) {
                 Save.instance.modOptions["cameramove"] = value;
