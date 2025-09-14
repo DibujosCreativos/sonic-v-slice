@@ -9,7 +9,9 @@ Song Additions:
 
 Features:
 - Added "Screen Shake" option
-  * This feature is used notably in 'YOU CAN'T RUN' and 'FINAL ESCAPE'
+
+- Completely overhauled Fatality - changes made by @Comedy Lost
+ 
 
 Improvements/Optimizations:
 - (TBD) ASTC Version of the mod
