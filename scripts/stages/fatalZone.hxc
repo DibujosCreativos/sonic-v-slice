@@ -180,6 +180,37 @@ class FatalZone extends Stage
 		super.onDestroy(event);
 		if (doFatalPopups) Cursor.hide();
 		if (screenRatioEdit) {
+			if (!FlxG.onMobile && FlxG.width != 1280) {
+				var wasFullscreen = Application.current.window.fullscreen;
+				Application.current.window.fullscreen = false;
+				var wideScreen = (26 * 6) + 4;
+
+				FlxG.initialWidth = FlxG.width = 1280;
+				FlxG.initialHeight = FlxG.height = 720;
+				FlxG.stage.stageWidth = 1280;
+				FlxG.resizeWindow(1280, 720);
+				for (cameras in FlxG.cameras.list) {
+					cameras.width = FlxG.initialWidth;
+					cameras.height = FlxG.initialHeight;
+				}
+				FlxG.camera.width = FlxG.initialWidth;
+				FlxG.camera.height = FlxG.initialHeight;
+    			var resolutionX = Math.ceil(Application.current.window.display.currentMode.width * Application.current.window.scale);
+    			var resolutionY = Math.ceil(Application.current.window.display.currentMode.height * Application.current.window.scale);
+    			Application.current.window.x = (resolutionX - Application.current.window.width) / 2;
+    			Application.current.window.y = (resolutionY - Application.current.window.height) / 2;
+
+				FlxG.scaleMode = new FullScreenScaleMode(); // Change the mode to recenter the game
+				//Return to fullscreen to fix the camera offset weirdness
+				if (wasFullscreen) Application.current.window.fullscreen = true;
+			}
+		}
+	}
+
+	public override function onSongEnd(event) {
+		super.onSongEnd(event);
+		if (doFatalPopups) Cursor.hide();
+		if (screenRatioEdit) {
 			if (!FlxG.onMobile) {
 				var wasFullscreen = Application.current.window.fullscreen;
 				Application.current.window.fullscreen = false;
