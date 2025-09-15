@@ -29,6 +29,7 @@
 ---
 
 ## Bug Fixes
+- Fixed various crediting issues (#8, @ThePootisBird)
 - Fixed an issue where missing a Phantom Note would add to the miss counter  
 - Fixed Screen Static not disabling when the option is turned off in *You Can't Run*  
 - Fix the red vignette + camera shake not stopping during the GHZ section in *You Can't Run*  
