@@ -1,45 +1,37 @@
-## 0.3.0:
+# 0.3.0  
+*Last main release until the full version.*
+*This W.I.P changelog also includes to-dos*
 
-&nbsp;*\* Last main release until the full version.*
+---
 
+## Song Additions
+- *(W.I.P.)* **You Can't Run Encore**  
+- *(Todo)* **Sunshine**  
+- *(Todo)* **Soulless**  
+- *(Todo)* **Manual Blast**  
 
+---
 
-Song Additions:
+## Features
+- Added **"Camera Shake"** option  
+- Completely overhauled **Fatality** *(changes by @Comedy Lost)*
 
-* *(W.I.P)* **You Can't Run Encore**
-* *(Todo)* **Sunshine**
-* *(Todo)* **Soulless**
-* *(Todo)* **Manual Blast**
+---
 
+## Improvements / Optimizations
+- (W.I.P) Separated song vocals (changes by Dibujos Creativos)
+- *(Todo)* ASTC Version of the mod  
 
+**Mobile**  
+- Jumpscares now match the screen resolution  
 
-Features:
+---
 
-* Added "Camera Shake" option
-* Completely overhauled Fatality - changes made by @Comedy Lost
+## Bug Fixes
+- Fixed an issue where missing a Phantom Note would add to the miss counter  
+- Fixed Screen Static not disabling when the option is turned off in *You Can't Run*  
+- Fix the red vignette + camera shake not stopping during the GHZ section in *You Can't Run*  
+- *(Todo)* Fix moving strumline not resetting after restarting *Too Slow*  
 
-
-
-Improvements/Optimizations:
-
-* *(Todo)* ASTC Version of the mod
-
-
-
-**- Mobile**
-
-* Make jumpscares match with the screen resolution
-
-
-
-Bug Fixes:
-
-* Fixed an issue where missing a Phantom Note would add to the miss counter
-* Fixed Screen Static not disabling when the option is turned off in You Can't Run
-* *(Todo)* Fix the red vignette and the camera shake not stopping during the GHZ section in You Can't Run
-* *(Todo)* Fix moving strumline not resetting after restarting Too Slow
-* 
-
-**- Mobile**
-
-* *(Todo)* Fix Too Slow crashing on song start
+**Mobile**  
+- *(Todo)* Fix *Too Slow* crashing on song start  

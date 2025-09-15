@@ -38,25 +38,6 @@ class YouCantRunSong extends Song {
         hasPlayedCutscene = true;
     }
 
-	function onNoteHit(event:HitNoteScriptEvent)
-    {
-        if (!event.note.noteData.getMustHitNote())
-        {
-            if (!STOP)
-            {
-            if (event.note.holdNoteSprite != null)
-            {
-                // if there's a sustain, it'll keep on shaking the camera.
-                FlxG.camera.shake(0.01, event.note.holdNoteSprite.sustainLength/1000);
-            }
-            else
-                FlxG.camera.shake(0.01, 0.2); // screen will shake for 0.2 seconds if opponent hits a regular note.
-            }
-        }
-    
-        super.onNoteHit(event);
-    }
-
     public override function onCountdownStart(event:CountdownScriptEvent):Void {
         super.onCountdownStart(event);
 

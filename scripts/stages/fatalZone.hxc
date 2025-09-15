@@ -23,6 +23,7 @@ import funkin.input.Cursor;
 
 class FatalZone extends Stage
 {
+    /* Code by @ComedyLost */
 	var statix:FunkinSprite;
 	var leftBorder:FlxSprite;
 	var rightBorder:FlxSprite;

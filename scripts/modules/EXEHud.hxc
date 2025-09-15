@@ -74,7 +74,6 @@ class EXEHud extends Module
         
         determineFontStyle();
         
-        // Set up positioning
         setupPositioning();
         
         if (PlayState.instance.scoreText != null) {
@@ -141,12 +140,11 @@ class EXEHud extends Module
             textY = hudOffset;
         }
         
-        // Move HUD elements to the right for fatalZone stage
         var currentStage = PlayState.instance.currentStage?.id ?? "";
         if (currentStage == "fatalZone" && doRetroAspectRatio && FlxG.onMobile) {
             textX = 160;
         } else {
-            textX = 20; // Default position
+            textX = 20;
         }
     }
     
@@ -154,10 +152,9 @@ class EXEHud extends Module
         var directory = 'sonicUI/' + fontStyle;
         var currentSongId = PlayState.instance.currentSong.id.toLowerCase();
         
-        // Create health sprite for fight-or-flight song (above misses)
         if (currentSongId == 'fight-or-flight') {
             sonicHealthSprite = new FlxSprite(textX, textY - hudOffset);
-            sonicHealthSprite.loadGraphic(Paths.image('sonicUI/sonic1/health')); // Always use sonic1 health sprite
+            sonicHealthSprite.loadGraphic(Paths.image('sonicUI/sonic1/health'));
             sonicHealthSprite.antialiasing = false;
             sonicHealthSprite.scale.set(3.5, 3.5);
             sonicHealthSprite.updateHitbox();
@@ -166,7 +163,6 @@ class EXEHud extends Module
             PlayState.instance.add(sonicHealthSprite);
         }
         
-        // Create main HUD sprites
         sonicMissesSprite = new FlxSprite(textX, textY);
         sonicMissesSprite.loadGraphic(Paths.image(directory + '/misses'));
         sonicMissesSprite.antialiasing = false;
@@ -238,7 +234,6 @@ class EXEHud extends Module
             );
         }
         
-        // Position time numbers
         var hudTimeOffsets = [22, 22, 28, 27];
         for (i in 0...timeNumbers.length) {
             if (timeNumbers[i] != null && sonicTimeSprite != null) {
@@ -253,12 +248,11 @@ class EXEHud extends Module
     function updatePixelNumbers() {
         var directory = 'sonicUI/' + fontStyle;
         var currentSongId = PlayState.instance.currentSong.id.toLowerCase();
-        
-        // Update health display for fight-or-flight song
+
         if (currentSongId == 'fight-or-flight' && sonicHealthSprite != null) {
-            // Convert health from 0-2 range to 0-100 range (showing actual health percentage)
+
             var healthPercent = Math.round((PlayState.instance.health / 2) * 100);
-            // Clamp to ensure it stays within 0-100 range
+
             if (healthPercent < 0) healthPercent = 0;
             if (healthPercent > 100) healthPercent = 100;
             var healthStr = Std.string(healthPercent);
@@ -430,7 +424,7 @@ class EXEHud extends Module
     
     override function onNoteMiss(ev:ScriptEvent) {
         super.onNoteMiss(ev);
-        if (!inPlay || ev.healthChange == 0) return;
+        if (!inPlay || ev.healthChange == 0 || ev.note.noteData.kind == "phantomnote") return;
         
         misses++;
     }
