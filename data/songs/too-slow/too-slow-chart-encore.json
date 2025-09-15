@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "scrollSpeed": {
-    "encore": 3
+    "encore": 3.4
   },
   "events": [
     {

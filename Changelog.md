@@ -19,8 +19,9 @@
 ---
 
 ## Improvements / Optimizations
+- Increased scroll speed for **Too Slow Encore**
 - (W.I.P) Separated song vocals (changes by Dibujos Creativos)
-- *(Todo)* ASTC Version of the mod  
+- *(Todo)* ASTC Version of the mod
 
 **Mobile**  
 - Jumpscares now match the screen resolution  
