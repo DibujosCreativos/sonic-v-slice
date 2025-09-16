@@ -298,29 +298,29 @@
       "t": 13714.2857142857,
       "e": "PlayAnimation",
       "v": {
+	"force": true,
+	"anim": "laugh",
+	"target": "dad"
+}
+    },
+    {
+      "t": 13928.5714285714,
+      "e": "Play Animation",
+      "v": {
+	"value1": "laugh",
+	"value2": "dad"
+}
+    },
+    {
+      "t": 13928.5714285714,
+      "e": "PlayAnimation",
+      "v": {
 	"target": "dad",
 	"anim": "laugh",
 	"force": true
 }
     },
     {
-      "t": 13928.5714285714,
-      "e": "Play Animation",
-      "v": {
-	"value1": "laugh",
-	"value2": "dad"
-}
-    },
-    {
-      "t": 13928.5714285714,
-      "e": "PlayAnimation",
-      "v": {
-	"force": true,
-	"anim": "laugh",
-	"target": "dad"
-}
-    },
-    {
       "t": 14142.8571428571,
       "e": "Play Animation",
       "v": {
@@ -332,18 +332,18 @@
       "t": 14142.8571428571,
       "e": "PlayAnimation",
       "v": {
-	"force": true,
+	"target": "dad",
 	"anim": "laugh",
-	"target": "dad"
+	"force": true
 }
     },
     {
       "t": 14357.1428571429,
       "e": "PlayAnimation",
       "v": {
-	"force": true,
+	"target": "dad",
 	"anim": "laugh",
-	"target": "dad"
+	"force": true
 }
     },
     {
@@ -358,9 +358,9 @@
       "t": 14571.4285714286,
       "e": "PlayAnimation",
       "v": {
-	"force": true,
+	"target": "dad",
 	"anim": "laugh",
-	"target": "dad"
+	"force": true
 }
     },
     {
@@ -375,9 +375,9 @@
       "t": 14785.7142857143,
       "e": "PlayAnimation",
       "v": {
-	"target": "dad",
+	"force": true,
 	"anim": "laugh",
-	"force": true
+	"target": "dad"
 }
     },
     {
@@ -400,9 +400,9 @@
       "t": 15000,
       "e": "PlayAnimation",
       "v": {
-	"target": "dad",
+	"force": true,
 	"anim": "laugh",
-	"force": true
+	"target": "dad"
 }
     },
     {
@@ -715,18 +715,18 @@
       "t": 56553.5714285714,
       "e": "NoteSwapEvent",
       "v": {
-	"strumline": "both",
-	"notestyle": "exePixel"
+	"notestyle": "exePixel",
+	"strumline": "both"
 }
     },
     {
       "t": 56571.4285714286,
       "e": "ZoomCamera",
       "v": {
-	"duration": 4,
 	"ease": "INSTANT",
-	"mode": "stage",
-	"zoom": 1.35
+	"duration": 4,
+	"zoom": 1.35,
+	"mode": "stage"
 }
     },
     {
@@ -741,11 +741,11 @@
       "t": 56642.8571428571,
       "e": "FocusCamera",
       "v": {
-	"x": 0,
 	"duration": 4,
+	"x": 0,
 	"y": 0,
-	"ease": "INSTANT",
-	"char": 1
+	"char": 1,
+	"ease": "INSTANT"
 }
     },
     {
@@ -920,8 +920,8 @@
       "t": 83982.1428571428,
       "e": "NoteSwapEvent",
       "v": {
-	"strumline": "both",
-	"notestyle": "exeFourKey"
+	"notestyle": "exeFourKey",
+	"strumline": "both"
 }
     },
     {
@@ -936,21 +936,21 @@
       "t": 84017.8571428571,
       "e": "ZoomCamera",
       "v": {
-	"ease": "INSTANT",
 	"duration": 4,
-	"zoom": 1,
-	"mode": "stage"
+	"ease": "INSTANT",
+	"mode": "stage",
+	"zoom": 1
 }
     },
     {
       "t": 84160.7142857143,
       "e": "FocusCamera",
       "v": {
-	"x": 0,
 	"duration": 4,
+	"x": 0,
 	"y": 0,
-	"ease": "INSTANT",
-	"char": 1
+	"char": 1,
+	"ease": "INSTANT"
 }
     },
     {
@@ -1546,11 +1546,38 @@
 }
     },
     {
+      "t": 130285.714285714,
+      "e": "PlayAnimation",
+      "v": {
+	"target": "dad",
+	"force": true,
+	"anim": "laugh"
+}
+    },
+    {
       "t": 130500,
       "e": "Play Animation",
       "v": {
 	"value1": "laugh",
 	"value2": "dad"
+}
+    },
+    {
+      "t": 130500,
+      "e": "PlayAnimation",
+      "v": {
+	"target": "dad",
+	"force": true,
+	"anim": "laugh"
+}
+    },
+    {
+      "t": 130714.285714286,
+      "e": "PlayAnimation",
+      "v": {
+	"target": "dad",
+	"force": true,
+	"anim": "laugh"
 }
     },
     {
@@ -1570,11 +1597,38 @@
 }
     },
     {
+      "t": 130928.571428571,
+      "e": "PlayAnimation",
+      "v": {
+	"target": "dad",
+	"force": true,
+	"anim": "laugh"
+}
+    },
+    {
       "t": 131142.857142857,
       "e": "Play Animation",
       "v": {
 	"value1": "laugh",
 	"value2": "dad"
+}
+    },
+    {
+      "t": 131142.857142857,
+      "e": "PlayAnimation",
+      "v": {
+	"target": "dad",
+	"force": true,
+	"anim": "laugh"
+}
+    },
+    {
+      "t": 131357.142857143,
+      "e": "PlayAnimation",
+      "v": {
+	"target": "dad",
+	"force": true,
+	"anim": "laugh"
 }
     },
     {
@@ -1591,6 +1645,15 @@
       "v": {
 	"value1": "laugh",
 	"value2": "dad"
+}
+    },
+    {
+      "t": 131571.428571429,
+      "e": "PlayAnimation",
+      "v": {
+	"target": "dad",
+	"force": true,
+	"anim": "laugh"
 }
     },
     {
@@ -2271,6 +2334,15 @@
       "v": {
 	"value1": "1",
 	"value2": "ycr-cherribun"
+}
+    },
+    {
+      "t": 168857.142857143,
+      "e": "PlayAnimation",
+      "v": {
+	"target": "dad",
+	"force": false,
+	"anim": "scream"
 }
     },
     {
@@ -3153,6 +3225,15 @@
       "v": {
 	"value1": "0.025",
 	"value2": "0.01"
+}
+    },
+    {
+      "t": 196285.714285714,
+      "e": "PlayAnimation",
+      "v": {
+	"target": "dad",
+	"force": false,
+	"anim": "die"
 }
     },
     {
@@ -7759,31 +7840,10 @@
         "p": [        ]
       },
       {
-        "t": 130285.714285714,
-        "d": 5,
-        "l": 0,
-        "k": "No Animation",
-        "p": [        ]
-      },
-      {
         "t": 130392.857142857,
         "d": 0,
         "l": 0,
         "k": "phantomnote",
-        "p": [        ]
-      },
-      {
-        "t": 130500,
-        "d": 5,
-        "l": 0,
-        "k": "No Animation",
-        "p": [        ]
-      },
-      {
-        "t": 130714.285714286,
-        "d": 5,
-        "l": 0,
-        "k": "No Animation",
         "p": [        ]
       },
       {
@@ -7794,38 +7854,10 @@
         "p": [        ]
       },
       {
-        "t": 130928.571428571,
-        "d": 5,
-        "l": 0,
-        "k": "No Animation",
-        "p": [        ]
-      },
-      {
-        "t": 131142.857142857,
-        "d": 5,
-        "l": 0,
-        "k": "No Animation",
-        "p": [        ]
-      },
-      {
-        "t": 131357.142857143,
-        "d": 5,
-        "l": 0,
-        "k": "No Animation",
-        "p": [        ]
-      },
-      {
         "t": 131357.142857143,
         "d": 3,
         "l": 0,
         "k": "phantomnote",
-        "p": [        ]
-      },
-      {
-        "t": 131571.428571428,
-        "d": 5,
-        "l": 0,
-        "k": "No Animation",
         "p": [        ]
       },
       {

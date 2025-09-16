@@ -19,13 +19,11 @@ class CustomLyricsEvent extends SongEvent
     public override function handleEvent( data:SongEventData ):Void
     {
         var enableLyrics = ModuleHandler.getModule("EXEOptions").scriptGet("dolyrics");
-        if (!enableLyrics) return; // Prevent all logic if dolyrics is not enabled
+        if (!enableLyrics) return;
 
-        // Shortcut way to access the PlayState file from the source code.
 		var state = PlayState.instance;
 		if ( state == null ) return;
 
-        // Extract parameters from event data with defaults
         var lyric:String = data.value.lyric != null ? data.value.lyric : "";
         var font:String = data.value.font != null ? data.value.font : "VCR_OSD_MONO.ttf";
         var size:Int = data.value.size != null ? data.value.size : 32;
@@ -45,19 +43,15 @@ class CustomLyricsEvent extends SongEvent
             lyrics.destroy();
         }
 
-        // Create the text object with customizable parameters
         lyrics = new FlxText( 0, 0, width, "", size );
         
-        // Convert hex color strings to integers
         var textColor:Int = parseColor(color);
         var borderColor:Int = parseColor(outlineColor);
         
-        // Set the format with custom parameters
         lyrics.setFormat( Paths.font(font), size, textColor, alignment, FlxTextBorderStyle.OUTLINE, borderColor );
         lyrics.borderSize = borderSize;
         lyrics.letterSpacing = letterSpacing;
         
-        // Set camera based on parameter
         switch(cameraType.toLowerCase()) {
             case "cutscene":
                 lyrics.cameras = [state.camCutscene];
@@ -72,7 +66,6 @@ class CustomLyricsEvent extends SongEvent
         lyrics.alpha = 0;
         lyrics.zIndex = state.playerStrumline.zIndex + 20;
         
-        // Position the lyrics
         if (useHealthBarPosition) {
             if (ModuleHandler.getModule('EXEOptions').scriptGet('exehud')) {
                 lyrics.x = state.healthBar.x - 400;
@@ -105,23 +98,19 @@ class CustomLyricsEvent extends SongEvent
         state.refresh();
     }
 
-    // Helper function to parse color strings (hex format) to integers
     private function parseColor(colorStr:String):Int
     {
         if (colorStr.charAt(0) == '#') {
             colorStr = colorStr.substring(1);
         }
         
-        // Ensure we have a full 6-character hex string
         if (colorStr.length == 3) {
-            // Convert RGB to RRGGBB
             var r = colorStr.charAt(0);
             var g = colorStr.charAt(1);
             var b = colorStr.charAt(2);
             colorStr = r + r + g + g + b + b;
         }
         
-        // Add alpha channel if not present (FF = fully opaque)
         if (colorStr.length == 6) {
             colorStr = "FF" + colorStr;
         }
@@ -129,14 +118,11 @@ class CustomLyricsEvent extends SongEvent
         return Std.parseInt("0x" + colorStr);
     }
 
-    // The name of the event within the Chart Editor screen.
     public function getTitle():String
     {
         return "Lyrics";
     }
 
-    // Event information that will show within the Chart Editor screen,
-    // and how the game will know what to run.
     public function getEventSchema():SongEventSchema
     {
         return [

@@ -5,10 +5,10 @@
 ---
 
 ## Song Additions
-- *(W.I.P.)* **You Can't Run Encore**  
+- **You Can't Run Encore**  
 - *(Todo)* **Sunshine**  
-- *(Todo)* **Soulless**  
-- *(Todo)* **Manual Blast**  
+- *(Todo)* **Soulless**   
+- *(Todo)* **Milk**
 
 ---
 
