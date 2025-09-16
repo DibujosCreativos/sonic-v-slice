@@ -12,8 +12,8 @@ Relive **VS Sonic.Exe** on a new engine!
 
 ### ROUND 1 / VS SONIC.EXE:
 
-- **Too Slow**
-- **You Can't Run**
+- **Too Slow | Too Slow Encore**
+- **You Can't Run | You Can't Run Encore**
 - **Triple Trouble**
 - **Final Escape**
 

@@ -24,7 +24,7 @@
 - *(Todo)* ASTC Version of the mod
 
 **Mobile**  
-- Jumpscares now match the screen resolution  
+- *(Todo)* Jumpscares now match the screen resolution  
 
 ---
 
