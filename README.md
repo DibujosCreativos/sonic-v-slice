@@ -6,7 +6,7 @@ Relive **VS Sonic.Exe** on a new engine!
 
 ---
 
-## <span class="SelectedElement">**<u>Update 0.2.5</u>**</span>
+## <span class="SelectedElement">**<u>Update 0.3.0 BETA</u>**</span>
 
 *Includes 18 playable songs!*  
 
