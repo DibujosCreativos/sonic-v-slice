@@ -81,6 +81,7 @@ class FatalZone extends Stage
 		screenRatioEdit = ModuleHandler.getModule("EXEOptions").scriptGet("screenratio");
 		modChartsEnabled = ModuleHandler.getModule("EXEOptions").scriptGet("modcharts");
 		doFatalPopups = ModuleHandler.getModule("EXEOptions").scriptGet("fatalpopups");
+		doWindowMovement = ModuleHandler.getModule("EXEOptions").scriptGet("doWindowMovement");
 
 		FunkinSprite.cacheTexture(Paths.image('fatal/domain'));
 		FunkinSprite.cacheTexture(Paths.image('fatal/domain2'));
@@ -347,11 +348,11 @@ class FatalZone extends Stage
 				phase2.zIndex = 12;
 				PlayState.instance.currentStage.refresh();
 			case 1984:
-				Xamount += 2;
-				Yamount += 2;
-				windowX = Application.current.window.x;
-				windowY = Application.current.window.y;
-				IsWindowMoving = true;
+				if (doWindowMovement) Xamount += 2;
+				if (doWindowMovement) Yamount += 2;
+				if (doWindowMovement) windowX = Application.current.window.x;
+				if (doWindowMovement) windowY = Application.current.window.y;
+				if (doWindowMovement) IsWindowMoving = true;
 				statix.visible = true;
 				statix.animation.play('static');
 
@@ -371,35 +372,35 @@ class FatalZone extends Stage
 				phase3bg.zIndex = 20;
 				PlayState.instance.currentStage.refresh(); // Apply Z-Index.
 			case 2208:
-				IsWindowMoving = false;
+				if (doWindowMovement) IsWindowMoving = false;
 			case 2230:
-				shakescreen();
+				if (doWindowMovement) shakescreen();
 				PlayState.instance.camGame.shake(0.02, 0.8);
 				PlayState.instance.camHUD.shake(0.02, 0.8);
 			case 2240:
-				IsWindowMoving = true;
+				if (doWindowMovement) IsWindowMoving = true;
 			case 2528:
-				shakescreen();
-				IsWindowMoving = true;
-				Yamount += 3;
-				Xamount += 3;
+				if (doWindowMovement) shakescreen();
+				if (doWindowMovement) IsWindowMoving = true;
+				if (doWindowMovement) Yamount += 3;
+				if (doWindowMovement) Xamount += 3;
 				PlayState.instance.camGame.shake(0.02, 2);
 				PlayState.instance.camHUD.shake(0.02, 2);
 			case 2530:
-				shakescreen();
+				if (doWindowMovement) shakescreen();
 			case 2535:
-				shakescreen();
+				if (doWindowMovement) shakescreen();
 			case 2540:
-				shakescreen();
+				if (doWindowMovement) shakescreen();
 			case 2545:
-				shakescreen();
+				if (doWindowMovement) shakescreen();
 			case 2550:
-				shakescreen();
+				if (doWindowMovement) shakescreen();
 			case 2555:
-				shakescreen();
+				if (doWindowMovement) shakescreen();
 			case 2560:
-				IsWindowMoving = false;
-				windowGoBack();
+				if (doWindowMovement) IsWindowMoving = false;
+				if (doWindowMovement) windowGoBack();
 		}
 	}
 }

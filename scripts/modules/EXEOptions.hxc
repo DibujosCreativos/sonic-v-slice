@@ -41,6 +41,7 @@ class EXEOptions extends Module
     public var quickTimeEvents:Bool = true;
     public var doSongIntroCards:Bool = true;
     public var doCameraShake:Bool = true;
+    public var doWindowMovement:Bool = true;
     //public var doWarningScreen:Bool = true; // Mobile Warning Screen
 
 
@@ -76,6 +77,7 @@ class EXEOptions extends Module
         if(Save.instance.modOptions["quickTimeEvents"] == null) Save.instance.modOptions["quickTimeEvents"] = true;
         if(Save.instance.modOptions["doSongIntroCards"] == null) Save.instance.modOptions["doSongIntroCards"] = true;
         if(Save.instance.modOptions["doCameraShake"] == null) Save.instance.modOptions["doCameraShake"] = true;
+        if(Save.instance.modOptions["doWindowMovement"] == null) Save.instance.modOptions["doWindowMovement"] = true;
 
         if (!FlxG.onMobile) {
             ghosttap = Save.instance.modOptions["ghosttap"];
@@ -104,6 +106,7 @@ class EXEOptions extends Module
         doSongIntroCards = Save.instance.modOptions["doSongIntroCards"];
         doWarningScreen = Save.instance.modOptions["doWarningScreen"];
         doCameraShake = Save.instance.modOptions["doCameraShake"];
+        doWindowMovement = Save.instance.modOptions["doWindowMovement"];
     }
 
     public var inOptions:Bool = false;
@@ -116,7 +119,7 @@ class EXEOptions extends Module
             inOptions = true;
 
             prefs.items.createItem(120, 120 * prefs.items.length + 30, "EXE: HUD", "bold", () -> false); // Separate options from the default preferences OR modded preferences.
-			prefs.preferenceDesc.push("HUD options for Versus Sonic.exe.");
+			prefs.preferenceDesc.push("HUD options for VS Sonic.EXE");
 
             prefs.createPrefItemCheckbox("Blood Note Splashes", "Replaces the default note splashes with blood splashes in most VS Sonic.Exe songs.", function(value) {
                 Save.instance.modOptions["bloodsplashes"] = value;
@@ -139,7 +142,7 @@ class EXEOptions extends Module
             }
 
             prefs.items.createItem(120, 120 * prefs.items.length + 30, "EXE: GAMEPLAY", "bold", () -> false); // Separate options from the default preferences OR modded preferences.
-			prefs.preferenceDesc.push("Gameplay options for Versus Sonic.exe.");
+			prefs.preferenceDesc.push("Gameplay options for VS Sonic.EXE");
 
             if (!FlxG.onMobile) {
                 prefs.createPrefItemCheckbox("Ghost Tapping", "Allows key-presses without penalty when no notes are present.", function(value) {
@@ -159,6 +162,12 @@ class EXEOptions extends Module
                     cinematiceffect = value;
                     Save.instance.flush();
                 }, Save.instance.modOptions["cinematiceffect"]);
+
+                prefs.createPrefItemCheckbox("Window Movement", "Enables the moving and shaking of the game window. Used in Fatality.", function(value) {
+                    Save.instance.modOptions["doWindowMovement"] = value;
+                    doWindowMovement = value;
+                    Save.instance.flush();
+                }, Save.instance.modOptions["doWindowMovement"]);
             }
 
             prefs.createPrefItemCheckbox("Fatal Error Popups", "Enables the visibility of the 'Fatal Error' popups used in Fatality.", function(value) {
@@ -213,7 +222,7 @@ class EXEOptions extends Module
             );
 
             prefs.items.createItem(120, 120 * prefs.items.length + 30, "EXE: GRAPHICS", "bold", () -> false); // Separate options from the default preferences OR modded preferences.
-			prefs.preferenceDesc.push("Graphic options for Versus Sonic.exe.");
+			prefs.preferenceDesc.push("Graphic options for VS Sonic.EXE");
 
             prefs.createPrefItemCheckbox("Shaders", "Adds custom shaders (VCR, etc) to certain songs.", function(value) {
                 Save.instance.modOptions["bonusfeatures"] = value;
@@ -258,13 +267,13 @@ class EXEOptions extends Module
 			}, Save.instance.modOptions["encoreSkin"]);
 
             prefs.items.createItem(120, 120 * prefs.items.length + 30, "EXE: MENU", "bold", () -> false); // Separate options from the default preferences OR modded preferences.
-			prefs.preferenceDesc.push("Menu options for Versus Sonic.exe.");
+			prefs.preferenceDesc.push("Menu options for Versus VS Sonic.EXE");
 
-            prefs.createPrefItemCheckbox("Mobile Warning Screen", "Enables the warning screen for mobile devices.", function(value) {
+            /* prefs.createPrefItemCheckbox("Mobile Warning Screen", "Enables the warning screen for mobile devices.", function(value) {
                 Save.instance.modOptions["doWarningScreen"] = value;
                 doWarningScreen = value;
                 Save.instance.flush();
-            }, Save.instance.modOptions["doWarningScreen"]);
+            }, Save.instance.modOptions["doWarningScreen"]); */
 
 			prefs.createPrefItemEnum("Freeplay BG", "Allows switching between different freeplay BGs (Backing Cards).", [
                 "Dad" => "Dad",
