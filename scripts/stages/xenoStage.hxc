@@ -12,8 +12,6 @@ import funkin.graphics.FunkinSprite;
 import funkin.ui.FullScreenScaleMode;
 import funkin.modding.module.ModuleHandler;
 
-import CustomCharacterPreloader;
-
 class XenoStage extends Stage
 {
 	public var cutoutSize = FullScreenScaleMode.gameCutoutSize.x / 2.5;
