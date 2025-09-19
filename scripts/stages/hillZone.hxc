@@ -21,20 +21,16 @@ class HillZone extends Stage {
     public var doCinematics:Bool = true;
     public var doModcharts:Bool = true;
 
-    // Black things
     public var blackOverlay:FlxSprite;
 	public var topBorder:FlxSprite;
 	public var bottomBorder:FlxSprite;
 
-    // Jumpscares and static stuff
     public var sonicJumpscare:FunkinSprite;
     public var sonicJump:FunkinSprite;
     public var staticScreen:FunkinSprite;
 
-    // Sonic dialogue animation (For preloading)
     public var sonicAnimation:FunkinSprite;
 
-	// Add these variables for wiggle logic
 	var doStrumlineWiggle:Bool = false;
 	var basePlayerStrumPos:Float = 0;
 	var baseOpponentStrumPos:Float = 0;
@@ -159,7 +155,7 @@ class HillZone extends Stage {
         }
     }
     public function screenStatic():Void {
-        if (!doScreenStatic || PlayState.instance.currentSong.id.toLowerCase() != "too-slow") return;
+        if (!doScreenStatic) return;
 
 		staticScreen.visible = true;
 		staticScreen.animation.play('static');
@@ -198,7 +194,6 @@ class HillZone extends Stage {
 			strumlinePositionSet = true;
 		}
 
-
 		if (doStrumlineWiggle) {
 			var curbet = (Conductor.instance.songPosition/1000)*(Conductor.instance.bpm/60);
 			for (i in 0...4) {
@@ -220,7 +215,6 @@ class HillZone extends Stage {
         blackOverlay.alpha = 0;
 
         cinematics("hide");
-
 	}
 
     function onStepHit(event:SongTimeScriptEvent):Void {
