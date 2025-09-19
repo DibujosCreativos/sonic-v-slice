@@ -83,11 +83,6 @@ class XenoStage extends Stage
 		PlayState.instance.add(screenGlitch1);
 	}
 
-	override function buildStage()
-	{
-		super.buildStage();
-	}
-
 	function switchStageBackground(area:String):Void {
 		p3_Stats = getNamedProp('p3_Stats');
 		p3_Glitch = getNamedProp('p3_Glitch');
