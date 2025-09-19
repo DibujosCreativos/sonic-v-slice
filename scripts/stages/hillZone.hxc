@@ -46,8 +46,6 @@ class HillZone extends Stage {
     override function onCreate(event:ScriptEvent):Void {
         super.onCreate(event);
 
-        if (PlayState.instance.currentSong.id.toLowerCase() != "too-slow") return;
-
 		FunkinMemory.cacheSound(Paths.sound("sppok", "shared"));
 		FunkinMemory.cacheSound(Paths.sound("datOneSound", "shared"));
         FunkinMemory.cacheSound(Paths.sound("staticBUZZ", "shared"));
@@ -104,7 +102,7 @@ class HillZone extends Stage {
 		PlayState.instance.add(sonicJumpscare);
 
         sonicJump = FunkinSprite.create(0, 0, "simplejump720");
-        sonicJump.setPosition(FlxG.onMobile ? 200 : 150, 0);
+        sonicJump.setPosition(FlxG.onMobile ? 200 : 0, 0);
 		sonicJump.cameras = [PlayState.instance.camCutscene];
         sonicJump.zIndex = 5001;
 		sonicJump.visible = false;
@@ -228,7 +226,8 @@ class HillZone extends Stage {
     function onStepHit(event:SongTimeScriptEvent):Void {
         super.onStepHit(event);
 
-        // Screen static effect for both variations
+        if (!PlayState.instance.currentSong.id.toLowerCase() == "too-slow") return;
+
         if (event.beat == 2 || event.beat % 35 == 0)
 		{
             screenStatic();

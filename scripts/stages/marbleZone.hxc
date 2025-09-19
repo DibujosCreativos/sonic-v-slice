@@ -88,17 +88,15 @@ class MarbleZone extends Stage
 
         if (songID == "round-a-bout") {
         if (sarah != null) {
-            var dadAnim = PlayState.instance.currentStage.getDad().animation.curAnim;
+            var dadAnim = PlayState.instance.currentStage.getDad().animation.curAnim.name;
             
             if (dadAnim != null) {
                 var animName = dadAnim.name;
             
-                // Only play non-idle animations when they change, and ensure they loop
                 if (animName == 'singLEFT') {
                     if (lastDadAnim != animName) {
                         sarah.playAnimation('singLEFT', true);
                     }
-                    // Keep the animation looping while dad is still singing
                     else if (sarah.animation.curAnim != null && sarah.animation.finished) {
                         sarah.playAnimation('singLEFT', true);
                     }

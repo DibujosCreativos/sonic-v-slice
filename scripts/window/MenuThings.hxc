@@ -14,7 +14,6 @@ class MenuThings extends Module
 
     public var exeDESKTOP_VERSION:String = '0.3.0';
     public var windowTitle:String = 'Friday Night Funkin\': Vs. Sonic.exe'; // edit
-    public var iconPath:String = Paths.image('exeIcon');
 
     public var exeSongs:Array<String> = [ // I hate this
         "too-slow", "you-cant-run", "triple-trouble", "final-escape",
@@ -32,10 +31,11 @@ class MenuThings extends Module
         if (FlxG.state is PlayState) {
             if (exeSongs.indexOf(PlayState.instance.currentSong.id.toLowerCase()) != -1)
             {
-                CustomIcon.setIcon(iconPath);
+                CustomIcon.setIcon(Paths.image('exeIcon'));
                 WindowUtil.setWindowTitle(windowTitle);
             } else {
-                return;
+                WindowUtil.setWindowTitle(Constants.TITLE);
+                CustomIcon.setIcon(Paths.image('icon16'));
             }
         }
     }
@@ -48,7 +48,7 @@ class MenuThings extends Module
 
         if (FlxG.state is MainMenuState)
         {
-            FlxG.state.leftWatermarkText.text = Constants.VERSION + " | EXE V-SLICE v" + exeDESKTOP_VERSION;
+            FlxG.state.rightWatermarkText.text = "SONIC.EXE V-SLICE v" + exeDESKTOP_VERSION;
         }
     }
 }

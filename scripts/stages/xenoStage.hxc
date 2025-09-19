@@ -1,32 +1,28 @@
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import funkin.audio.FunkinSound;
-import funkin.graphics.FunkinSprite;
 import funkin.Paths;
 import funkin.play.PlayState;
 import funkin.play.stage.Stage;
-import funkin.modding.module.ModuleHandler;
 import funkin.util.Constants;
 import funkin.ui.FullScreenScaleMode;
-
-import funkin.play.character.CharacterDataParser;
-import funkin.play.character.CharacterType;
-import funkin.play.components.HealthIcon;
-
-// Rewrote the entire script because 0.7.0 broke half of the old one
-// It's a lot more readable and organized now though
+import funkin.audio.FunkinSound;
+import funkin.graphics.FunkinSprite;
+import funkin.modding.module.ModuleHandler;
 
 class XenoStage extends Stage
 {
-	final cutoutSize = FullScreenScaleMode.gameCutoutSize.x / 2.5;
-
-    public var originalPlayerStrumlineX:Float = (FlxG.width / 2 + Constants.STRUMLINE_X_OFFSET) + (cutoutSize / 2.0);
+	public var cutoutSize = FullScreenScaleMode.gameCutoutSize.x / 2.5;
+    public var originalPlayerStrumlineX:Float = (FlxG.width / 2 + Constants.STRUMLINE_X_OFFSET) + (cutoutSize / 2.0); // exact strumline offsets ripped from source code
 	public var originalOpponentStrumlineX:Float = Constants.STRUMLINE_X_OFFSET + cutoutSize;
 
-    var tailsJump:FunkinSprite;
-	var knucklesJump:FunkinSprite;
-	var eggmanJump:FunkinSprite;
+	public var jumpPosX:Float = FlxG.onMobile ? 200 : 0;
+    public var tailsJump:FunkinSprite;
+	public var knucklesJump:FunkinSprite;
+	public var eggmanJump:FunkinSprite;
+
+	public var doJumpscares:Bool = true;
 
 	public function new()
 	{
@@ -37,27 +33,32 @@ class XenoStage extends Stage
 	{
 		super.onCreate(event);
 
-		if (!PlayState.instance.currentSong.id.toLowerCase() == "triple-trouble") return;
-
 		FunkinSprite.cacheTexture(Paths.image('Xenostage/P3_Stat'));
 		FunkinSprite.cacheTexture(Paths.image('Tails'));
 		FunkinSprite.cacheTexture(Paths.image('Knuckles'));
 		FunkinSprite.cacheTexture(Paths.image('Eggman'));
 
-		enableJumpscare = ModuleHandler.getModule("EXEOptions").scriptGet("dojumpscares");
-		mobile = FlxG.onMobile;
+		doJumpscares = ModuleHandler.getModule("EXEOptions").scriptGet("dojumpscares");
 
-		tailsJump = FunkinSprite.create(0, 0, 'Tails');
+        blackOverlay = new FlxSprite(0, 0);
+        blackOverlay.makeGraphic(FlxG.width, FlxG.height, 0xFF000000);
+        blackOverlay.scrollFactor.set();
+        blackOverlay.cameras = [PlayState.instance.camCutscene];
+        blackOverlay.zIndex = 5000;
+        PlayState.instance.add(blackOverlay);
+        blackOverlay.alpha = 0;
+
+		tailsJump = FunkinSprite.create(jumpPosX, 0, 'Tails');
 		tailsJump.cameras = [PlayState.instance.camHUD];
 		tailsJump.alpha = 0;
 		PlayState.instance.add(tailsJump);
 
-		knucklesJump = FunkinSprite.create(0, 0, 'Knuckles');
+		knucklesJump = FunkinSprite.create(jumpPosX, 0, 'Knuckles');
 		knucklesJump.cameras = [PlayState.instance.camHUD];
 		knucklesJump.alpha = 0;
 		PlayState.instance.add(knucklesJump);
 
-		eggmanJump = FunkinSprite.create(0, 0, 'Eggman');
+		eggmanJump = FunkinSprite.create(jumpPosX, 0, 'Eggman');
 		eggmanJump.cameras = [PlayState.instance.camHUD];
 		eggmanJump.alpha = 0;
 		PlayState.instance.add(eggmanJump);
@@ -81,42 +82,43 @@ class XenoStage extends Stage
 		super.buildStage();
 	}
 
-	function switchToXeno():Void {
-		var p3_Stats = getNamedProp('p3_Stats');
-		var p3_Glitch = getNamedProp('p3_Glitch');
+	function switchStageBackground(area:String):Void {
+		p3_Stats = getNamedProp('p3_Stats');
+		p3_Glitch = getNamedProp('p3_Glitch');
 
-		p3_Stats.zIndex = 4;
-        p3_Glitch.zIndex = 1;
-
-		PlayState.instance.currentStage.refresh(); // Refresh the stage to apply the zindex
-	}
-
-	function resetStage():Void {
-		var p3_Stats = getNamedProp('p3_Stats');
-		var p3_Glitch = getNamedProp('p3_Glitch');
-
-		p3_Stats.zIndex = 1;
-		p3_Glitch.zIndex = 3;
-
+		switch (area) {
+			case 'xenoBG':
+				p3_Stats.zIndex = 4;
+				p3_Glitch.zIndex = 1;
+				return;
+			case 'glitchBG':
+				p3_Stats.zIndex = 1;
+				p3_Glitch.zIndex = 4;
+				return;
+			default:
+				return;
+		}
 		PlayState.instance.currentStage.refresh();
 	}
 
-	function swapStrumlines():Void {
-		if (mobile) return;
+	function switchStrumlines(mode:String):Void {
+		if (FlxG.onMobile) return;
 
-		PlayState.instance.playerStrumline.x = originalOpponentStrumlineX;
-		PlayState.instance.opponentStrumline.x = originalPlayerStrumlineX;
+		switch (mode) {
+			case 'swap':
+				PlayState.instance.playerStrumline.x = originalOpponentStrumlineX;
+				PlayState.instance.opponentStrumline.x = originalPlayerStrumlineX;
+				return;
+			case 'reset':
+		        PlayState.instance.playerStrumline.x = originalPlayerStrumlineX;
+		        PlayState.instance.opponentStrumline.x = originalOpponentStrumlineX;
+			default:
+				return;
+		}
 	}
 
-	function resetStrumlines():Void {
-		if (mobile) return;
-
-		PlayState.instance.playerStrumline.x = originalPlayerStrumlineX;
-		PlayState.instance.opponentStrumline.x = originalOpponentStrumlineX;
-	}
-
-	function doJumpscare(jumpscareType:String):Void {
-		if (!enableJumpscare) return;
+	function doJumpscare(jumpscareType:String):Void { // make it an event? not today
+		if (!doJumpscares) return;
 
 		switch (jumpscareType) {
 			case 'tails':
@@ -134,6 +136,11 @@ class XenoStage extends Stage
 			default:
 				return;
 		}
+
+        blackOverlay.alpha = 1;
+        new FlxTimer().start(0.3, function(timer:FlxTimer) {
+            blackOverlay.alpha = 0;
+		});
 	}
 
 	function startStaticTransition():Void {
@@ -141,84 +148,54 @@ class XenoStage extends Stage
 		screenGlitch1.animation.play('busk');
 	}
 
-	function onStepHit(event:SongTimeScriptEvent):Void
-	{
+	function onStepHit(event:SongTimeScriptEvent):Void {
 		super.onStepHit(event);
 
 		if (!PlayState.instance.currentSong.id.toLowerCase() == "triple-trouble") return;
 
-		if (event.step == 4)
-		{
-			startStaticTransition();
+		switch (event.step) {
+			case 4: // Song startup
+				startStaticTransition();
+			case 151: // Tails jumpscare
+				doJumpscare('tails');
+			case 1029: // Transition to Xeno BG
+				startStaticTransition();
+			case 1038:
+				switchStageBackground('xenoBG');
+			case 1094: // Static during Xeno section
+				startStaticTransition();
+			case 1221:
+				startStaticTransition();
+			case 1285:
+				startStaticTransition();
+			case 1296: // Knuckles jumpscare + swap strumlines
+				switchStageBackground('glitchBG');
+				switchStrumlines('swap');
+				doJumpscare('knuckles');
+		    case 2308: // Transition to Xeno BG 2
+				startStaticTransition();
+			case 2320:
+				switchStageBackground('xenoBG');
+			case 2820:
+				startStaticTransition();
+			case 2824: // Eggman jumpscare + reset strumlines
+				switchStageBackground('glitchBG');
+				switchStrumlines('reset');
+				doJumpscare('eggman');
+			case 3160:
+				startStaticTransition();
+			case 3384:
+				startStaticTransition();
+			case 3947:
+				startStaticTransition();
+			case 3957:
+				switchStageBackground('xenoBG');
 		}
-		if (event.step == 151)
-		{
-			doJumpscare('tails');
-		}
-		if (event.step == 1029) {
-			startStaticTransition();
-		}
-		if (event.step == 1038) {
-			switchToXeno();
-			//switchCharacter('bf-thirdperson');
-			//switchCharacter('sonic-beast');
-		}
-		if (event.step == 1094) {
-			startStaticTransition();			
-		}
-		if (event.step == 1221) {
-			startStaticTransition();
-		}
-		if (event.step == 1285) {
-			startStaticTransition();
-		}
-		if (event.step == 1296) {
-			resetStage();
-			swapStrumlines();
-			doJumpscare('knuckles');
-			//switchCharacter('knux');
-			//switchCharacter('bf-invert');
-		}
-		if (event.step == 2308) {
-			startStaticTransition();
-		}
-		if (event.step == 2320) {
-			switchToXeno();
-		    //switchCharacter('sonic-beast-invert');
-			//switchCharacter('bf-thirdperson-flip');
-		}
-		if (event.step == 2820) {
-			startStaticTransition();
-		}
-		if (event.step == 2824) {
-			resetStage();
-            resetStrumlines();
-			doJumpscare('eggman');
-			//switchCharacter('eggy');
-			//switchCharacter('bf');
-		}
-		if (event.step == 3160) {
-			startStaticTransition();
-		}
-		if (event.step == 3384) {
-			startStaticTransition();
-		}
-		if (event.step == 3947) {
-			startStaticTransition();
-		}
-		if (event.step == 3957) {
-			switchToXeno();
-			//switchCharacter('bf-thirdperson');
-			//switchCharacter('sonic-beast');
-		}
-		if (event.step == 4850) {
-			startStaticTransition();
-	    }
 	}
 	override function onSongRetry(event:ScriptEvent):Void {
 		super.onSongRetry(event);
 
-		resetStage();
-		resetStrumlines();
+		switchStageBackground('glitchBG');
+		switchStrumlines('reset');
 	}
 }
