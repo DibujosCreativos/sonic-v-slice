@@ -12,6 +12,8 @@ import funkin.graphics.FunkinSprite;
 import funkin.ui.FullScreenScaleMode;
 import funkin.modding.module.ModuleHandler;
 
+import CustomCharacterPreloader;
+
 class XenoStage extends Stage
 {
 	public var cutoutSize = FullScreenScaleMode.gameCutoutSize.x / 2.5;
@@ -35,11 +37,6 @@ class XenoStage extends Stage
 	{
 		super.onCreate(event);
 
-		FunkinSprite.cacheTexture(Paths.image('Xenostage/P3_Stat'));
-		FunkinSprite.cacheTexture(Paths.image('Tails'));
-		FunkinSprite.cacheTexture(Paths.image('Knuckles'));
-		FunkinSprite.cacheTexture(Paths.image('Eggman'));
-
 		FunkinMemory.cacheSound(Paths.sound("TailsScreamLOL", "shared"));
 		FunkinMemory.cacheSound(Paths.sound("KnucklesScreamLOL", "shared"));
 		FunkinMemory.cacheSound(Paths.sound("EggmanScreamLOL", "shared"));
@@ -51,8 +48,8 @@ class XenoStage extends Stage
         blackOverlay.scrollFactor.set();
         blackOverlay.cameras = [PlayState.instance.camCutscene];
 		blackOverlay.zIndex = -1;
+		blackOverlay.alpha = 0;
         PlayState.instance.add(blackOverlay);
-        blackOverlay.alpha = 0;
 
 		tailsJump = FunkinSprite.create(jumpPosX, 0, 'Tails');
 		tailsJump.cameras = [PlayState.instance.camCutscene];
