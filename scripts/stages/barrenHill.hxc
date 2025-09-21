@@ -41,19 +41,19 @@ class BarrenHill extends Stage
 		blackOverlay.scrollFactor.set(0, 0);
 		blackOverlay.visible = false;
 		PlayState.instance.add(blackOverlay);
-
 	}
 
     public function screenStatic(mode:String):Void {
 		var staticSound = FunkinSound.playOnce(Paths.sound("staticBUZZ"), 0.6);
-		FlxTween.tween(staticSound, { volume: 0 }, 1);
-		staticScreen.visible = true;
 
 		switch (mode) {
 			case "single":
+				staticScreen.visible = true;
 				staticScreen.animation.play('static');
+				FlxTween.tween(staticSound, { volume: 0 }, 1);
 				return;
 			case "loop":
+				staticScreen.visible = true;
 				staticScreen.animation.play('staticloop');
 				return;
 			default:
@@ -73,7 +73,7 @@ class BarrenHill extends Stage
 
 	function onStepHit(event:SongTimeScriptEvent):Void
 	{
-		if (game.currentSong.id.toLowerCase() != "faker") return;
+		if (PlayState.instance.currentSong.id.toLowerCase() != "faker") return;
 
 		switch (event.step) {
 			case 768:

@@ -11,6 +11,8 @@ import funkin.audio.FunkinSound;
 import funkin.graphics.FunkinSprite;
 import funkin.modding.module.ModuleHandler;
 
+import ObjectHandler;
+
 class HillZone extends Stage {
 	public function new() {
 		super('hillZone');
@@ -29,8 +31,6 @@ class HillZone extends Stage {
     public var sonicJump:FunkinSprite;
     public var staticScreen:FunkinSprite;
 
-    public var sonicAnimation:FunkinSprite;
-
 	var doStrumlineWiggle:Bool = false;
 	var basePlayerStrumPos:Float = 0;
 	var baseOpponentStrumPos:Float = 0;
@@ -41,6 +41,8 @@ class HillZone extends Stage {
 
     override function onCreate(event:ScriptEvent):Void {
         super.onCreate(event);
+
+        ObjectHandler.preloadSonicAnimation();
 
 		FunkinMemory.cacheSound(Paths.sound("sppok", "shared"));
 		FunkinMemory.cacheSound(Paths.sound("datOneSound", "shared"));
@@ -97,21 +99,11 @@ class HillZone extends Stage {
         sonicJumpscare.visible = false;
 		PlayState.instance.add(sonicJumpscare);
 
-        sonicJump = FunkinSprite.create(0, 0, "simplejump720");
-        sonicJump.setPosition(FlxG.onMobile ? 200 : 0, 0);
+        sonicJump = FunkinSprite.create(FlxG.onMobile ? 200 : 0, 0, "simplejump720");
 		sonicJump.cameras = [PlayState.instance.camCutscene];
         sonicJump.zIndex = 5001;
 		sonicJump.visible = false;
 		PlayState.instance.add(sonicJump);
-
-        // Preload sonic dialogue animation
-        sonicAnimation = FunkinSprite.createSparrow(0, 0, "characters/getCHA");
-        sonicAnimation.animation.addByPrefix('gotcha', 'anim0', 24, false);
-        sonicAnimation.animation.play('gotcha');
-        sonicAnimation.cameras = [PlayState.instance.camHUD];
-        sonicAnimation.zIndex = 1500;
-        sonicAnimation.alpha = 0.000001;
-        PlayState.instance.add(sonicAnimation);
 
     }
     public function cinematics(mode:String):Void {
@@ -159,29 +151,14 @@ class HillZone extends Stage {
 
 		staticScreen.visible = true;
 		staticScreen.animation.play('static');
-		var staticScreenSound = FunkinSound.playOnce(Paths.sound("staticBUZZ"), 0.6);
-		FlxTween.tween(staticScreenSound, { volume: 0 }, 1, {
-			onComplete: function(tween:FlxTween) {
-				staticScreenSound.stop();
-			}
-		});
-    }
-    function buildStage():Void {
-        super.buildStage();
-
-        if (FlxG.onMobile) {
-            getNamedProp('TooSlowBG').scale.set(1.5, 1.305);
-		    getNamedProp('TooSlowGround').scale.set(1.6, 1.405);
-		    getNamedProp('TooSlowTopOverlay').scale.set(1.6, 1.405);
-		    getNamedProp('TooSlowTrees').scale.set(1.5, 1.35);
-        }
+		staticSound = FunkinSound.playOnce(Paths.sound("staticBUZZ"), 0.6);
+		FlxTween.tween(staticSound, { volume: 0 }, 1);
     }
     function startModchart():Void {
         if (!doModcharts || PlayState.instance.currentSong.id.toLowerCase() != "too-slow") return;
 
 		doStrumlineWiggle = true;
     }
-
 	override function onUpdate(event:UpdateScriptEvent):Void {
 		super.onUpdate(event);
 
@@ -206,7 +183,6 @@ class HillZone extends Stage {
 			PlayState.instance.opponentStrumline.x = baseOpponentStrumPos + Math.sin(curbet * Math.PI) * wiggleIntensity;
 		}
 	}
-
 	function onSongRetry() {
 		super.onSongRetry();
 
@@ -216,7 +192,6 @@ class HillZone extends Stage {
 
         cinematics("hide");
 	}
-
     function onStepHit(event:SongTimeScriptEvent):Void {
         super.onStepHit(event);
 

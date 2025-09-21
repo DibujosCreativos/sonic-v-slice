@@ -21,6 +21,8 @@ import funkin.play.ResultState;
 import funkin.util.TouchUtil;
 import funkin.input.Cursor;
 
+import ObjectHandler;
+
 class FatalZone extends Stage
 {
     /* Code by @ComedyLost */

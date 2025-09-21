@@ -10,6 +10,8 @@ import funkin.play.PlayState;
 import funkin.play.song.Song;
 import funkin.modding.module.ModuleHandler;
 
+import ObjectHandler;
+
 class ChaosSong extends Song
 {
 	public var opponentFloatOffset:Float = 0;
@@ -38,6 +40,8 @@ class ChaosSong extends Song
 	{
 		super.onCreate(event);
 
+		ObjectHandler.preloadFleetwayTextures(); // Preload Fleetway textures
+
 		swappingNotestylesModule = ModuleHandler.getModule('SwappingNotestyles');
 		doQuickTime = ModuleHandler.getModule("EXEOptions").scriptGet("quickTimeEvents");
 		doBloodSplash = ModuleHandler.getModule("EXEOptions").scriptGet("bloodsplashes");
@@ -46,8 +50,6 @@ class ChaosSong extends Song
 		chamberEmerald1 = PlayState.instance.currentStage.getNamedProp('ChamberRainEmerald');
 		chamberEmerald2 = PlayState.instance.currentStage.getNamedProp('ChamberRainEmerald2');
 		dad = PlayState.instance.currentStage.getDad();
-
-		cacheFleetwayTextures();
 		
 		if (doQuickTime) {
 			initializeQuickTime();
@@ -99,12 +101,6 @@ class ChaosSong extends Song
 			FlxG.camera.shake(0.05, 0.5);
 			PlayState.instance.camHUD.shake(0.03, 0.5);
 		}
-	}
-	
-	function cacheFleetwayTextures():Void {
-		FunkinSprite.cacheTexture(Paths.image('characters/fleetway1'));
-		FunkinSprite.cacheTexture(Paths.image('characters/fleetway2'));
-		FunkinSprite.cacheTexture(Paths.image('characters/fleetway3'));
 	}
 
 	function onUpdate(event:UpdateScriptEvent):Void {
