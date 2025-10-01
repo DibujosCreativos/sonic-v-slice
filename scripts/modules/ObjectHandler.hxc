@@ -27,8 +27,9 @@ class ObjectHandler extends Module {
         }
     }
 
-    public static function preloadStaticNotes():Void {
+    public static function preloadExeNotes():Void {
         FunkinMemory.cacheTexture(Paths.image('STATIC_assets'));
+        FunkinMemory.cacheTexture(Paths.image('PhantomNote'));
         FunkinMemory.cacheTexture(paths.image('hitStatic'));
         FunkinMemory.cacheSound(Paths.sound("hitStatic1", "shared"));
     }

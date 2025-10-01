@@ -267,7 +267,7 @@ class EXEOptions extends Module
 			}, Save.instance.modOptions["encoreSkin"]);
 
             prefs.items.createItem(120, 120 * prefs.items.length + 30, "EXE: MENU", "bold", () -> false); // Separate options from the default preferences OR modded preferences.
-			prefs.preferenceDesc.push("Menu options for Versus VS Sonic.EXE");
+			prefs.preferenceDesc.push("Menu options for VS Sonic.EXE");
 
             /* prefs.createPrefItemCheckbox("Mobile Warning Screen", "Enables the warning screen for mobile devices.", function(value) {
                 Save.instance.modOptions["doWarningScreen"] = value;

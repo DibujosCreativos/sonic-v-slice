@@ -1,115 +1,65 @@
-import funkin.audio.FunkinSound;
+import flixel.FlxG;
+import flixel.util.FlxTimer;
 import flixel.FlxSprite;
-import funkin.modding.module.Module;
 import funkin.Paths;
 import funkin.play.PlayState;
-import funkin.Preferences;
-import flixel.util.FlxTimer;
-import flixel.FlxG;
+import funkin.audio.FunkinSound;
+import funkin.graphics.FunkinSprite;
+import funkin.play.notes.notekind.NoteKind;
+import funkin.Highscore;
 
-// Borrowed some code from the VS Tricky V-Slice Port. Made by thisiscub
-/*https://gamebanana.com/mods/513337*/
+class PhantomNote extends NoteKind
+{
+    var draining:Bool = false;
+    var rate:Float = 0.01;
+    var tick:FlxTimer = null;
+    var stop:FlxTimer = null;
 
-// Contents from this script are free to use.
-
-class PhantomNote extends Module {
-
-    private var baseDrainRate:Float = 0.002;
-    private var currentDrainRate:Float = 0.002;
-    private var drainTimer:FlxTimer;
-    private var stopDrainTimer:FlxTimer;
-    private var isDraining:Bool = false;
-
-    function new() {
-        super("phantomnote");
-    }
-
-	override function onCreate(event:ScriptEvent):Void {
-		
-        game = PlayState.instance;
-        drainTimer = new FlxTimer();
-        stopDrainTimer = new FlxTimer();
-
-        super.onCreate(event);
+    public function new(noteKind:String, description:String = "", ?noteStyleId:String, ?params:Array<NoteKindParam>)
+	{
+		super("phantomnote", "Phantom Note (EXE)", "phantomnote", []);
 	}
 
-	function onNoteHit(event:HitNoteScriptEvent) {
-    	if (event.judgement == "perfect" || event.judgement == "good") {
+	function onNoteIncoming(event)
+	{
+		super.onNoteIncoming(event);
+
+		event.note.lowPriority = true;
+	}
+
+	function onNoteHit(event:HitNoteScriptEvent)
+	{
+    	if (event.judgement == "perfect" || "good") {
     		super.onNoteHit(event);
 			return;
 		}
-		if (event.note.noteData.kind == "phantomnote") {
-			currentDrainRate += 0.005; // Increase drain rate with each note hit.
-			startHealthDrain();
-		}
+
+        rate += 0.06;
+
+        if (!draining)
+        {
+            draining = true;
+
+            tick = new FlxTimer().start(0.05, function(t:FlxTimer)
+            {
+                if (PlayState.instance == null || PlayState.instance.isGamePaused) return;
+                PlayState.instance.health -= rate * 0.05;
+            }, 0);
+
+            stop = new FlxTimer().start(7, function(_)
+            {
+                if (tick != null) { tick.cancel(); tick = null; }
+                draining = false;
+                rate = 0.01;
+                stop = null;
+            });
+        }
 	}
-
-	private function startHealthDrain():Void {
-		if (drainTimer == null || stopDrainTimer == null) return; // Prevent errors
-		
-		// Stop any existing drain
-		stopHealthDrain();
-		
-		// Start draining health
-		isDraining = true;
-		drainTimer.start(0.1, function(timer:FlxTimer):Void {
-			if (isDraining && PlayState.instance != null) {
-				// Drain health but ensure it doesn't go below 0.01 to prevent death
-				PlayState.instance.health = Math.max(0.01, PlayState.instance.health - currentDrainRate);
-			}
-		}, 0); // 0 means infinite loops until manually stopped
-		
-		// Stop the drain after 3 seconds
-		stopDrainTimer.start(3.0, function(timer:FlxTimer):Void {
-			stopHealthDrain();
-		});
-	}
-	
-	private function stopHealthDrain():Void {
-		isDraining = false;
-		
-		// Cancel active timers
-		if (drainTimer != null && drainTimer.active) {
-			drainTimer.cancel();
-		}
-		if (stopDrainTimer != null && stopDrainTimer.active) {
-			stopDrainTimer.cancel();
-		}
-	}
-
-	function onNoteIncoming(event:NoteScriptEvent) {
-		if (event.note.noteData.kind == "phantomnote") {
-			event.note.frames = Paths.getSparrowAtlas("PhantomNote");
-
-			if (!Preferences.downscroll) {
-				event.note.animation.addByPrefix("blueScroll", "B000");
-				event.note.animation.addByPrefix("greenScroll", "C000");
-			} else {
-				event.note.animation.addByPrefix("greenScroll", "B000");
-				event.note.animation.addByPrefix("blueScroll", "C000");
-			}
-
-			event.note.animation.addByPrefix("redScroll", "D000");
-			event.note.animation.addByPrefix("purpleScroll", "A000");
-
-			var animName:String;
-
-			switch (event.note.noteData.data % 4) {
-				case 0:
-					animName = "purpleScroll";
-				case 1:
-					animName = "blueScroll";
-				case 2:
-					animName = "greenScroll";
-				case 3:
-					animName = "redScroll";
-			}
-
-			event.note.animation.play(animName);
-		}
-	}
-	function onNoteMiss(event:NoteScriptEvent) {
-		if (event.note.noteData.kind == "phantomnote")
+	function onNoteMiss(event:NoteScriptEvent)
+	{
+		if (event.note.noteKind == "phantomnote")
+		{
 			event.cancelEvent();
+		}
 	}
 }
